@@ -25,5 +25,8 @@ private:
 	bool isRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	SDL_Surface* surface;
+	SDL_Texture* frame_buffer1;
+	SDL_Texture* frame_buffer2;
 };
 

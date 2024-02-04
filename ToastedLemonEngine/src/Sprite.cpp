@@ -9,6 +9,8 @@ Sprite::Sprite()
 	height = 0;
 	hot_x = 0;
 	hot_y = 0;
+    scale_x = 1;
+    scale_y = 1;
 }
 
 Sprite::~Sprite()
@@ -33,25 +35,32 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
 
     Uint32* pixels = (Uint32*)texturePixels;
     Uint32*  spritePixels = (Uint32*)sprite->pixels;
-    for (int offsetY = 0; offsetY < height; ++offsetY) {
-        for (int offsetX = 0; offsetX < width; ++offsetX) {
+    for (int offsetY = 0; offsetY < height*scale_y; ++offsetY) {
+        for (int offsetX = 0; offsetX < width*scale_x; ++offsetX) {
+            int targetIndex = (targetY + offsetY) * (texturePitch / 4) + targetX + (offsetX);
 
-            //If pixel is off screen, dont draw it
-            if (targetX + offsetX >= WIDTH || targetX + offsetX < 0)
-                continue;
-            if (targetY + offsetY >= HEIGHT || targetY + offsetY < 0)
-                continue;
+            int spriteIndex = ((offsetY - (offsetY % scale_y)) / scale_y) * width + 
+                (((offsetX - (offsetX % scale_x)) / scale_x));
 
-            int targetIndex = (targetY + offsetY) * (texturePitch / 4) + (targetX + offsetX);
-            int spriteIndex = offsetY * width + offsetX;
+            if (spritePixels[spriteIndex] == 4285822068) continue; //This is a transparent pixel
 
-            Uint32 pixelColor = spritePixels[spriteIndex];
-            Uint8 r, g, b;
-            SDL_GetRGB(pixelColor, sprite->format, &r, &g, &b);
+            if (targetIndex >= 0 && targetIndex < texturePitch / 4 * HEIGHT &&
+                (targetX + offsetX) >= 0 && (targetX + offsetX) < WIDTH &&
+                spriteIndex >= 0 && spriteIndex < width * height) {
+                Uint32 pixelColor = spritePixels[spriteIndex];
+                Uint8 r, g, b;
+                SDL_GetRGB(pixelColor, sprite->format, &r, &g, &b);
 
-            pixels[targetIndex] = SDL_MapRGB(sprite->format, r, g, b);
+                pixels[targetIndex] = SDL_MapRGB(sprite->format, r, g, b);
+            }
         }
     }
 
     SDL_UnlockTexture(targetTexture);
+}
+
+void Sprite::scale(int x_scale, int y_scale)
+{
+    scale_x = x_scale;
+    scale_y = y_scale;
 }
