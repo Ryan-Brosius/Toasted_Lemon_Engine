@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 	const int fps = 60;
 	const int frameDelay = 1000 / fps;
 	
-	Uint32 frameStart;
+	Uint32 frameStart = 0;
 	Uint32 previousRender = 0;
 
 	game = new Game();
@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
 	while (game->running()) {
 
 		frameStart = SDL_GetTicks();
+
 
 		game->handelEvents();
 		game->update();

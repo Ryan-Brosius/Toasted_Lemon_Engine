@@ -19,5 +19,6 @@ private:
 	int hot_y;
 	int scale_x;
 	int scale_y;
+	void rotation(double rotate, int* x, int* y);
 };
 

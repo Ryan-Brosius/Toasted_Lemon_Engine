@@ -89,14 +89,25 @@ void Game::render()
 	//so we can manually edit the pixels on it
 	SDL_SetRenderTarget(renderer, frame_buffer1);
 
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+	
+	//Clears texture
+	void* pixels;
+	int pitch;
+	SDL_LockTexture(frame_buffer1, NULL, &pixels, &pitch);
+	memset(pixels, 0, pitch * HEIGHT);
+	SDL_UnlockTexture(frame_buffer1);
 
-	player->scale(5, 5);
-	player->draw(frame_buffer1, 200, 200);
-	player->draw(frame_buffer1, 200, 400);
-	player->draw(frame_buffer1, 790, 400);
-	player->draw(frame_buffer1, 550, 590);
+	SDL_RenderClear(renderer);
+	
+
+	player->scale(7, 7);
+	player->draw(frame_buffer1, 300, 300);
+
+	//player->draw(frame_buffer1, 200, 200);
+	//player->draw(frame_buffer1, 200, 400);
+	//player->draw(frame_buffer1, 790, 400);
+	//player->draw(frame_buffer1, 550, 590);
 
 	SDL_SetRenderTarget(renderer, NULL);
 

@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <iostream>
+#include <math.h>
 
 #define WIDTH 800
 #define HEIGHT 600
