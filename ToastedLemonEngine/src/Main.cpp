@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Game.h"
+#include "Networking.h"
 
 Game* game = nullptr;
 
@@ -13,6 +14,9 @@ int main(int argc, char* argv[]) {
 
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
+
+	NetworkServer server = NetworkServer();
+	server.init();
 
 	while (game->running()) {
 
