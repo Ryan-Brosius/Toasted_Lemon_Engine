@@ -7,7 +7,7 @@ NetworkClient::NetworkClient()
 	IPaddress ip;
 }
 
-void NetworkClient::init(char* pIP, int port)
+void NetworkClient::init(const char* pIP, int port)
 {
 	if (SDLNet_ResolveHost(&ip, pIP, port) == -1)
 	{
@@ -34,4 +34,12 @@ void NetworkClient::init(char* pIP, int port)
 		fprintf(stderr, "Error SDLNet_TCP_AddSocket: %sn", SDLNet_GetError());
 		exit(-1);
 	}
+}
+
+void NetworkClient::RecvTest()
+{
+	char text[100];
+	
+	SDLNet_TCP_Recv(socket, text, 6);
+	std::cout << text;
 }

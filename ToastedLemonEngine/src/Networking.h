@@ -7,11 +7,15 @@ class NetworkServer
 public:
 	NetworkServer();
 	void init();
+	void CloseServer();
+	void CheckConnections();
+	const char* GetHostName();
+	void SendTest();
 
 private:
 	int next_ind;
 	TCPsocket server_socket;
-	//Client clients[MAX_SOCKETS];
+	TCPsocket client;
 	SDLNet_SocketSet socket_set;
 	TCPsocket sockets;
 	IPaddress ip;
@@ -21,7 +25,8 @@ class NetworkClient
 {
 public:
 	NetworkClient();
-	void init(char* pIP, int port);
+	void init(const char* pIP, int port);
+	void RecvTest();
 
 private:
 	TCPsocket socket;

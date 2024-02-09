@@ -18,10 +18,14 @@ int main(int argc, char* argv[]) {
 	NetworkServer server = NetworkServer();
 	server.init();
 
+	NetworkClient client = NetworkClient();
+	client.init(server.GetHostName(), 8099);
+
+	server.CheckConnections();
+
 	while (game->running()) {
 
 		frameStart = SDL_GetTicks();
-
 
 		game->handelEvents();
 		game->update();
@@ -31,10 +35,14 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
+		/*server.SendTest();
+		client.RecvTest();*/
+
 		SDL_Delay(1);
 	}
 
 	game->clean();
+	server.CloseServer();
 
 	return 0;
 }
