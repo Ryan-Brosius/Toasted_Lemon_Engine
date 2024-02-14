@@ -101,7 +101,7 @@ void Game::render()
 	SDL_RenderClear(renderer);
 	
 
-	player->scale(7, 7);
+	player->scale(8, 8);
 	player->draw(frame_buffer1, 300, 300);
 
 	//player->draw(frame_buffer1, 200, 200);
