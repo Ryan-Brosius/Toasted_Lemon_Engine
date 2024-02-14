@@ -15,11 +15,12 @@ int main(int argc, char* argv[]) {
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
 
-	NetworkServer server = NetworkServer();
+	NetworkServer server = NetworkServer(4);
 	server.init();
 
 	NetworkClient client = NetworkClient();
-	client.init(server.GetHostName(), 8099);
+	client.init();
+	client.ConnectToHost(server.GetHostName(), 8099);
 
 	server.CheckConnections();
 
@@ -35,14 +36,14 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
-		/*server.SendTest();
-		client.RecvTest();*/
+		server.SendTest();
+		client.RecvTest();
 
 		SDL_Delay(1);
 	}
 
 	game->clean();
-	server.CloseServer();
+	server.CloseSocket();
 
 	return 0;
 }

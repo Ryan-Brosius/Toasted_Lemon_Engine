@@ -2,31 +2,47 @@
 #include <stdio.h>
 #include <iostream>
 
-class NetworkServer
+class NetworkAbstract
 {
 public:
-	NetworkServer();
+	virtual void init() = 0;
+	virtual void CloseSocket() = 0;
+	virtual void Encode() = 0;
+	virtual void Decode() = 0;
+};
+
+class NetworkServer: public NetworkAbstract
+{
+public:
+	NetworkServer(int maxCon);
 	void init();
-	void CloseServer();
+	void CloseSocket();
 	void CheckConnections();
 	const char* GetHostName();
 	void SendTest();
+	void Encode();
+	void Decode();
 
 private:
 	int next_ind;
 	TCPsocket server_socket;
 	TCPsocket client;
-	SDLNet_SocketSet socket_set;
-	TCPsocket sockets;
 	IPaddress ip;
+	int maxConnections;
+	SDLNet_SocketSet clientSocketSet;
+	int currentCon;
 };
 
-class NetworkClient
+class NetworkClient: public NetworkAbstract
 {
 public:
 	NetworkClient();
-	void init(const char* pIP, int port);
+	void init();
+	void ConnectToHost(const char* pIP, int port);
 	void RecvTest();
+	void CloseSocket();
+	void Encode();
+	void Decode();
 
 private:
 	TCPsocket socket;

@@ -1,19 +1,22 @@
 #include "Networking.h"
 
-#define MAX_SOCKETS 4
-
-NetworkServer::NetworkServer()
+NetworkServer::NetworkServer(int maxCon)
 {
-	int next_ind = 0;
-	TCPsocket server_socket;
+	next_ind = 0;
+	/*TCPsocket server_socket;
 	TCPsocket client;
-	SDLNet_SocketSet socket_set;
-	TCPsocket sockets[MAX_SOCKETS];
 	IPaddress ip;
+	int maxConnections;
+	SDLNet_SocketSet clientSocketSet;
+	int currentCon;*/
+
+	maxConnections = maxCon;
 }
 
 void NetworkServer::init()
 {
+	currentCon = 0;
+
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 	{
 		fprintf(stderr, "Error SDL_Init: %sn", SDL_GetError());
@@ -38,16 +41,10 @@ void NetworkServer::init()
 		exit(-1);
 	}
 
-	socket_set = SDLNet_AllocSocketSet(MAX_SOCKETS + 1);
-	if (socket_set == NULL)
+	clientSocketSet = SDLNet_AllocSocketSet(maxConnections);
+	if (clientSocketSet == NULL)
 	{
 		fprintf(stderr, "Error SDLNet_AllocSocketSet: %sn", SDLNet_GetError());
-		exit(-1);
-	}
-
-	if (SDLNet_TCP_AddSocket(socket_set, server_socket) == -1)
-	{
-		fprintf(stderr, "Error SDLNet_TCP-AddSocket: %sn", SDLNet_GetError());
 		exit(-1);
 	}
 }
@@ -69,26 +66,49 @@ void NetworkServer::CheckConnections()
 	}*/
 
 	client = SDLNet_TCP_Accept(server_socket);
+	if (client == NULL)
+	{
+		return;
+	}
+
+	if (currentCon < maxConnections)
+	{
+		if (SDLNet_TCP_AddSocket(clientSocketSet, client) == -1)
+		{
+			fprintf(stderr, "Error SDLNet_TCP_AddSocket: %sn", SDLNet_GetError());
+			exit(-1);
+		}
+	}
+	currentCon++;
 }
 
 void NetworkServer::SendTest()
 {
-	const char* text = "Hello\n";
+	/*const char* text = "Hello\n";
 
 	if (client != NULL)
 	{
 		SDLNet_TCP_Send(client, text, 6);
-	}
+	}*/
 }
-void NetworkServer::CloseServer()
+
+void NetworkServer::CloseSocket()
 {
-	if (SDLNet_TCP_DelSocket(socket_set, server_socket) == -1)
+	/*if (SDLNet_TCP_DelSocket(socket_set, server_socket) == -1)
 	{
 		fprintf(stderr, "Error SDLNet_TCP_DelSocket: %sn", SDLNet_GetError());
 		exit(-1);
-	}
+	}*/
 
 	SDLNet_TCP_Close(server_socket);
-	SDLNet_FreeSocketSet(socket_set);
+	//SDLNet_FreeSocketSet(socket_set);
 	SDLNet_Quit();
+}
+
+void NetworkServer::Encode()
+{
+}
+
+void NetworkServer::Decode()
+{
 }
