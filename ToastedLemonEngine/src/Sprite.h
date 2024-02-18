@@ -10,6 +10,8 @@ public:
 	void init(const char* fileName);
 	void draw(SDL_Texture* surface, int x, int y);
 	void scale(int x_scale, int y_scale);
+	void setRotation(double rot);
+	double getRotation();
 
 private:
 	SDL_Surface* sprite;
@@ -19,6 +21,6 @@ private:
 	int hot_y;
 	int scale_x;
 	int scale_y;
-	void rotation(double rotate, int* x, int* y);
+	double rotation;
 };
 
