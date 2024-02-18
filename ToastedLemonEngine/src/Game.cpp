@@ -12,6 +12,9 @@ Game::Game()
 	renderer = nullptr;
 	frame_buffer1 = nullptr;
 	frame_buffer2 = nullptr;
+
+	lastUpdate = 0;
+	currentUpdate = 0;
 }
 
 Game::~Game()
@@ -80,6 +83,10 @@ void Game::handelEvents()
 void Game::update()
 {
 	//TODO: allow "gameobjects" to use update
+
+	//DeltaTime Setup
+	lastUpdate = currentUpdate;
+	currentUpdate = SDL_GetTicks();
 }
 
 
@@ -102,12 +109,8 @@ void Game::render()
 	
 
 	player->scale(8, 8);
-	player->draw(frame_buffer1, 300, 300);
-
-	//player->draw(frame_buffer1, 200, 200);
-	//player->draw(frame_buffer1, 200, 400);
-	//player->draw(frame_buffer1, 790, 400);
-	//player->draw(frame_buffer1, 550, 590);
+	player->draw(frame_buffer1, WIDTH/2 - 16*4, HEIGHT/2 - 16 * 4);
+	player->setRotation(player->getRotation() + 360 * deltaTime());
 
 	SDL_SetRenderTarget(renderer, NULL);
 
@@ -131,4 +134,9 @@ void Game::clean()
 	SDL_Quit();
 
 	std::cout << "Game Cleared" << std::endl;
+}
+
+double Game::deltaTime()
+{
+	return ((double)currentUpdate - lastUpdate) / 1000.0;
 }

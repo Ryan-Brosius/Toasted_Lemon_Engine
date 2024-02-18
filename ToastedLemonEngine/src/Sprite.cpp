@@ -24,8 +24,6 @@ void Sprite::init(const char* fileName)
 	height = sprite->w;
 }
 
-double d_rotation = 0;
-
 
 //Wow whoever wrote this should get fired
 //TODO: clean up this code so I don't cry when I look at it
@@ -37,15 +35,16 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
 
     double r_cos = SDL_cos(rotation);
     double r_sin = SDL_sin(rotation);
+    
+    //Fix this later to only create size needed
+    int widthSize = widthScale * 2;
+    int heightSize = heightScale * 2;
 
-    int widthSize = (int) (widthScale * r_cos + heightScale * r_sin);
-    int heightSize = (int) (widthScale * r_sin + heightScale * r_cos);
+    int centerX = width / 2;
+    int centerY = height / 2;
 
-    widthSize = widthScale * 2;
-    heightSize = heightScale * 2;
-
-    if ((targetX + width) < 0 || (targetX - width) > WIDTH) return;
-    if ((targetY + height) < 0 || (targetY - height) > HEIGHT) return;
+    if ((targetX + widthScale) < 0 || (targetX - widthScale) > WIDTH) return;
+    if ((targetY + heightScale) < 0 || (targetY - heightScale) > HEIGHT) return;
 
     void* texturePixels;
     int texturePitch;
@@ -56,47 +55,27 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
     for (int offsetY = 0; offsetY < widthSize; ++offsetY) {
         for (int offsetX = 0; offsetX < heightSize; ++offsetX) {
             
-            int current_x = offsetX;
-            int current_y = offsetY;
-
-            current_x += targetX;
-            current_y += targetY;
-
-            int centerX = width / 2;
-            int centerY = height / 2;
-
-            rotation += 3.14 / (60 * 100000);
-
-            // std::cout << temp_x << " " << temp_y << std::endl;
-            //exit(1);
-
-            int targetIndex = current_y * (texturePitch / 4) + current_x;
-
-            //int targetIndex = current_y * (texturePitch / 4) + current_x;
-
-            //int spriteIndex = ((offsetY - (offsetY % scale_y)) / scale_y) * width +
-             //  (((offsetX - (offsetX % scale_x)) / scale_x));
+            //Choose the pixel location that the pixel will be blit to on screen
+            int texture_x = offsetX + targetX - (widthSize - widthScale) / 2;
+            int texture_y = ((offsetY + targetY) - (heightSize - heightScale) / 2) * (texturePitch / 4);
+            int targetIndex = texture_x + texture_y;
+            
+            //Rotate the pixel back to the original sprite image, to get color information
             int x0 = offsetX - (width / 2) * scale_x - (widthSize - widthScale)/2;
-            int y0 = offsetY - (height / 2) * scale_y - (heightSize - heightScale)/2; //lol fix this 53 shit later
+            int y0 = offsetY - (height / 2) * scale_y - (heightSize - heightScale)/2;
 
-     
+            int x_rot = r_cos * x0 + r_sin * y0 + (centerX * scale_x);
+            int y_rot = -r_sin * x0 + r_cos * y0 + (centerY * scale_y);
 
-            int temp_x = r_cos * x0 + r_sin * y0;
-            int temp_y = -r_sin * x0 + r_cos * y0;
+            if (x_rot < 0 || y_rot < 0 || (y_rot / scale_y) >= height || (x_rot / scale_x) >= width) continue;  //Prevents drawing errors due to rotation expanding
 
-            temp_x += (width / 2) * scale_x;
-            temp_y += (height / 2) * scale_y;
+            int spriteIndex = (y_rot / scale_y) * width + (x_rot / scale_x);
 
-            if (temp_x < 0 || temp_y < 0 || (temp_y / scale_y) >= height || (temp_x / scale_x) >= width) continue;
-
-            int spriteIndex = (temp_y / scale_y) * width + (temp_x / scale_x);
-
-            if (spriteIndex < 0 || spriteIndex > width * height) continue;
+            if (texture_x < 0 || texture_x > WIDTH || texture_y < 0) continue;  //Pixel is being drawn off the intended locaion
 
             if (spritePixels[spriteIndex] == 4285822068) continue; //This is a transparent pixel
 
             if (targetIndex >= 0 && targetIndex < texturePitch / 4 * HEIGHT &&
-                (targetX + offsetX) >= 0 && (targetX + offsetX) < WIDTH &&
                 spriteIndex >= 0 && spriteIndex < width * height) {
                 Uint32 pixelColor = spritePixels[spriteIndex];
                 Uint8 r, g, b;
@@ -110,24 +89,18 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
     SDL_UnlockTexture(targetTexture);
 }
 
-//void Sprite::rotation(double rotation, int* x, int* y) {
-//    //Rotates around center point of the sprite
-//    //x_not y_not
-//    double x0 = *x - (width / 2.0) * scale_x;
-//    double y0 = *y - (height / 2.0) * scale_y;
-//
-//    double r_sin = sin(rotation);
-//    double r_cos = cos(rotation);
-//
-//    double new_x = r_cos * x0 + r_sin * y0;
-//    double new_y = -r_sin * x0 + r_cos * y0;
-//
-//    *x = (int)(scale_x * (width / 2.0) + round(new_x));
-//    *y = (int)(scale_y * (height / 2.0) + round(new_y));
-//}
-
 void Sprite::scale(int x_scale, int y_scale)
 {
     scale_x = x_scale;
     scale_y = y_scale;
+}
+
+void Sprite::setRotation(double rot)
+{
+    rotation = rot * (M_PI / 180);
+}
+
+double Sprite::getRotation()
+{
+    return rotation * (180.0 / M_PI);
 }

@@ -22,6 +22,8 @@ public:
 
 	bool running() { return isRunning; }
 
+	double deltaTime();
+
 private:
 	bool isRunning;
 	SDL_Window* window;
@@ -29,5 +31,8 @@ private:
 	SDL_Surface* surface;
 	SDL_Texture* frame_buffer1;
 	SDL_Texture* frame_buffer2;
+
+	Uint32 lastUpdate;
+	Uint32 currentUpdate;
 };
 
