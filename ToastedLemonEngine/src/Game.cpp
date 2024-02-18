@@ -1,9 +1,11 @@
 #include "Game.h"
 #include "BitmapManager.h"
 #include "Sprite.h"
+#include "Animation.h"
 
 //Testing creating sprites
 Sprite* player = nullptr;
+Animation* animation = nullptr;
 
 Game::Game()
 {
@@ -63,8 +65,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	
 	//creating sprite here
 	player = new Sprite();
-	player->init("Assets/link.bmp");
+	player->init("Assets/link_sheet.bmp");
 	player->scale(8, 8);
+	animation = new Animation();
+	animation->init(player, 2, .5);
 }
 
 void Game::handelEvents()
@@ -90,6 +94,7 @@ void Game::update()
 	currentUpdate = SDL_GetTicks();
 
 	player->setRotation(player->getRotation() + 60 * deltaTime());
+	animation->update();
 }
 
 
