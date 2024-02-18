@@ -19,12 +19,12 @@ int main(int argc, char* argv[]) {
 		frameStart = SDL_GetTicks();
 
 		game->handelEvents();		//Will be used to handle input in the future
-		game->update();
+		game->update();				
 
-		//if (frameDelay <= (frameStart - previousRender)) {
-		game->render();
-		//	previousRender = SDL_GetTicks();
-		//}
+		if (frameDelay <= (frameStart - previousRender)) {
+			game->render();
+			previousRender = SDL_GetTicks();
+		}
 
 		SDL_Delay(1);
 	}

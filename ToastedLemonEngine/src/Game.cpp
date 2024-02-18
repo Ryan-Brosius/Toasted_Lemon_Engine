@@ -63,8 +63,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	
 	//creating sprite here
 	player = new Sprite();
-	player->init("link.bmp");
-
+	player->init("Assets/link.bmp");
+	player->scale(8, 8);
 }
 
 void Game::handelEvents()
@@ -85,8 +85,11 @@ void Game::update()
 	//TODO: allow "gameobjects" to use update
 
 	//DeltaTime Setup
+	//Prob should be moved in a different area later????
 	lastUpdate = currentUpdate;
 	currentUpdate = SDL_GetTicks();
+
+	player->setRotation(player->getRotation() + 60 * deltaTime());
 }
 
 
@@ -107,10 +110,9 @@ void Game::render()
 
 	SDL_RenderClear(renderer);
 	
-
-	player->scale(8, 8);
+	//draw player sprite
+	//will be changed with container of all sprites in the future :)
 	player->draw(frame_buffer1, WIDTH/2 - 16*4, HEIGHT/2 - 16 * 4);
-	player->setRotation(player->getRotation() + 360 * deltaTime());
 
 	SDL_SetRenderTarget(renderer, NULL);
 
