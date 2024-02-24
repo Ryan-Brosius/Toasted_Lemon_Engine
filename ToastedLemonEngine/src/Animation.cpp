@@ -1,32 +1,38 @@
 #include "Animation.h"
 #include "Game.h"
+#include "Sprite.h"
 
 extern Game* game;
 
 Animation::Animation() 
 {
-	double local_time = 0;
-	Sprite* sprite_sheet = nullptr;
+	local_time = 0;
+	sprite_sheet = nullptr;
 
-	int total_frames = 1;
-	int current_frame = 0;
-	double time_between_frames = 0;
+	total_frames = 1;
+	current_frame = 0;
+	time_between_frames = 0;
+	animating = true;
 }
 
 Animation::~Animation() {}
 
-void Animation::init(Sprite* s, int frames, double time) 
+void Animation::init(const char* spritesheet, int frames, double time) 
 {
-	sprite_sheet = s;
+	Sprite* sprite = new Sprite();
+	sprite->init(spritesheet);
+	sprite_sheet = sprite;
+
 	total_frames = frames;
 	time_between_frames = time;
 
-	s->setSpriteSheet(frames);
+	sprite->setSpriteSheet(frames);
 }
 
 void Animation::update() 
 {
-	Animation::determineFrame();
+	if (animating && total_frames != 1)
+		Animation::determineFrame();
 }
 
 void Animation::determineFrame()
@@ -39,4 +45,19 @@ void Animation::determineFrame()
 	sprite_sheet->setSheetOffset(current_frame);
 
 	local_time += game->deltaTime();
+}
+
+void Animation::setAnimating(bool ani)
+{
+	animating = ani;
+}
+
+Sprite* Animation::getSprite()
+{
+	return sprite_sheet;
+}
+
+void Animation::draw(SDL_Texture* surface, int x, int y)
+{
+	sprite_sheet->draw(surface, x, y);
 }

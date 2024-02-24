@@ -7,11 +7,18 @@ public:
 	Animation();
 	~Animation();
 
-	void init(Sprite* sprite_sheet, int total_frames, double time_between_frames);
+	void init(const char* sprite_sheet, int total_frames, double time_between_frames);
 
 	void update();
 
+	void setAnimating(bool animating);
+
+	Sprite* getSprite();
+
+	void draw(SDL_Texture* surface, int x, int y);
+
 private:
+	bool animating;
 	double local_time;
 	Sprite* sprite_sheet;
 

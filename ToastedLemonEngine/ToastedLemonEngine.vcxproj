@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\BitmapManager.cpp" />
@@ -18,6 +19,7 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameObject.h" />
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\BitmapManager.h" />

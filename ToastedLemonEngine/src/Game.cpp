@@ -2,10 +2,10 @@
 #include "BitmapManager.h"
 #include "Sprite.h"
 #include "Animation.h"
+#include "GameObject.h"
 
 //Testing creating sprites
-Sprite* player = nullptr;
-Animation* animation = nullptr;
+Player* player = nullptr;
 
 Game::Game()
 {
@@ -64,11 +64,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	SDL_SetTextureBlendMode(frame_buffer2, SDL_BLENDMODE_BLEND);
 	
 	//creating sprite here
-	player = new Sprite();
-	player->init("Assets/link_sheet.bmp");
-	player->scale(8, 8);
-	animation = new Animation();
-	animation->init(player, 2, .5);
+	player = new Player(NULL, NULL, NULL, 3, 3);
+	player->init();
 }
 
 void Game::handelEvents()
@@ -93,8 +90,8 @@ void Game::update()
 	lastUpdate = currentUpdate;
 	currentUpdate = SDL_GetTicks();
 
-	player->setRotation(player->getRotation() + 60 * deltaTime());
-	animation->update();
+	//Gameobject Testing
+	player->Update();
 }
 
 
@@ -103,9 +100,7 @@ void Game::render()
 	//frame_buffer is texture that gets wrapped around the screen
 	//so we can manually edit the pixels on it
 	SDL_SetRenderTarget(renderer, frame_buffer1);
-
 	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-	
 	//Clears texture
 	void* pixels;
 	int pitch;
@@ -117,9 +112,8 @@ void Game::render()
 	
 	//draw player sprite
 	//will be changed with container of all sprites in the future :)
-	player->draw(frame_buffer1, WIDTH/2 - 16*4, HEIGHT/2 - 16 * 4);
+	player->Render(frame_buffer1);
 
-	SDL_SetRenderTarget(renderer, NULL);
 
 	SDL_RenderClear(renderer);
 

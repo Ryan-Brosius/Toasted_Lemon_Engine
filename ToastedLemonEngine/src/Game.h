@@ -22,7 +22,7 @@ public:
 
 	bool running() { return isRunning; }
 	double deltaTime();
-
+	
 private:
 	bool isRunning;
 	SDL_Window* window;

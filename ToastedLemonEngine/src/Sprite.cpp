@@ -80,7 +80,7 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
             
             //Choose the pixel location that the pixel will be blit to on screen
             int texture_x = offsetX + targetX - (widthSize - widthScale) / 2;
-            int texture_y = ((offsetY + targetY) - (heightSize - heightScale) / 2) * (texturePitch / 4);
+            int texture_y = ((int) (offsetY + targetY - (heightSize - heightScale) / 2)) * (texturePitch / 4);
             int targetIndex = texture_x + texture_y;
             
             //Rotate the pixel back to the original sprite image, to get color information
