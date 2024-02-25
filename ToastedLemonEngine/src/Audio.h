@@ -1,5 +1,5 @@
 #pragma once
-#include "../Game.h"
+#include "Game.h"
 #include "Sound.h"
 #include <list>
 #include <string>
