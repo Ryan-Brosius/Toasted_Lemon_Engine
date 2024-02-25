@@ -23,6 +23,10 @@ public:
 	bool running() { return isRunning; }
 	double deltaTime();
 	
+	//Rendering
+	void* texturePixels;
+	int texturePitch;
+
 private:
 	bool isRunning;
 	SDL_Window* window;

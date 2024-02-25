@@ -17,6 +17,7 @@
     <ClCompile Include="src\BitmapManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\TilesheetMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GameObject.h" />
@@ -24,6 +25,7 @@
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\BitmapManager.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\TilesheetMap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

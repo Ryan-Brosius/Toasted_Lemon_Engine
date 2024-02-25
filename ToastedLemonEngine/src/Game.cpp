@@ -3,9 +3,11 @@
 #include "Sprite.h"
 #include "Animation.h"
 #include "GameObject.h"
+#include "TilesheetMap.h"
 
 //Testing creating sprites
 Player* player = nullptr;
+TilesheetMap* map = nullptr;
 
 Game::Game()
 {
@@ -66,6 +68,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//creating sprite here
 	player = new Player(NULL, NULL, NULL, 3, 3);
 	player->init();
+	map = new TilesheetMap();
 }
 
 void Game::handelEvents()
@@ -102,6 +105,7 @@ void Game::render()
 	SDL_SetRenderTarget(renderer, frame_buffer1);
 	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
 	//Clears texture
+
 	void* pixels;
 	int pitch;
 	SDL_LockTexture(frame_buffer1, NULL, &pixels, &pitch);
@@ -110,9 +114,14 @@ void Game::render()
 
 	SDL_RenderClear(renderer);
 	
+	SDL_LockTexture(frame_buffer1, NULL, &texturePixels, &texturePitch);
+
 	//draw player sprite
 	//will be changed with container of all sprites in the future :)
+	map->DrawMap(frame_buffer1);
 	player->Render(frame_buffer1);
+
+	SDL_UnlockTexture(frame_buffer1);
 
 
 	SDL_RenderClear(renderer);
