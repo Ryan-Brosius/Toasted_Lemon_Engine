@@ -1,5 +1,6 @@
 #pragma once
-#include "Game.h"
+#include "../Game.h"
+#include "Sound.h"
 #include <list>
 #include <string>
 #include <filesystem>
@@ -15,5 +16,6 @@ public:
 
 private:
 	list<Uint8> audioFiles;
+	Uint8 audioFile;
 	string audioPath;
 };

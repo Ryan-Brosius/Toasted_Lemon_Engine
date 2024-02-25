@@ -12,9 +12,13 @@ public:
 	void scale(int x_scale, int y_scale);
 	void setRotation(double rot);
 	double getRotation();
+	void setSpriteSheet(int sprites);
+	void setSheetOffset(int offset);
 
 private:
 	SDL_Surface* sprite;
+	int sprite_width;
+	int sprite_height;
 	int width;
 	int height;
 	int hot_x;
@@ -22,5 +26,6 @@ private:
 	int scale_x;
 	int scale_y;
 	double rotation;
+	int sheet_offset;
 };
 
