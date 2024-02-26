@@ -46,7 +46,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 		renderer = SDL_CreateRenderer(
 			window,
 			-1,
-			0);
+			SDL_RENDERER_ACCELERATED);
 		if (renderer) {
 			std::cout << "Renderer Initialized..." << std::endl;
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);

@@ -38,4 +38,5 @@ int Sound::PlaySound(int loop) {
 
 void Sound::StopSound() {
 	SDL_PauseAudioDevice(audioDevice, 1);
+	SDL_ClearQueuedAudio(audioDevice);
 }
