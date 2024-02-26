@@ -71,6 +71,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
 	// Creating audio object
 	audio = new Audio();
+	audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
 }
 
 void Game::handelEvents()
@@ -134,6 +135,7 @@ void Game::render()
 void Game::clean()
 {
 	//TODO: I love throwing my memory into the void
+	audio->StopAudio("TheFinalOfTheFantasy.wav");
 	audio->~Audio();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);

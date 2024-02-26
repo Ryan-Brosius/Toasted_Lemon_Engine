@@ -3,10 +3,10 @@
 
 class Sound {
 public:
-	Sound(char* filePath);
+	Sound(const char* filePath);
 	~Sound();
 	void PlaySound(SDL_AudioDeviceID *device, int loop);
-	void StopSound();
+	void StopSound(SDL_AudioDeviceID* device);
 
 private:
 	SDL_AudioSpec wav_spec;

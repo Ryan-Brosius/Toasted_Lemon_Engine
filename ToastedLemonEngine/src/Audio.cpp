@@ -1,23 +1,31 @@
 #include "Audio.h"
 #include "Sound.h"
-#include <filesystem>
-#include <iostream>
-//namespace directory_iterator = std::filesystem::directory_iterator;
 
 Audio::Audio() {
+	Audio::init();
+}
+
+Audio::~Audio() {
+	for (const auto& item : audioFiles) {
+		item.second->~Sound();
+	}
+	SDL_CloseAudioDevice(audioDevice);
+}
+
+void Audio::init() {
 	audioDevice = SDL_OpenAudioDevice(
 		nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE
 	);
 
-	//for (const auto& entry : directory_iterator(audioPath)) {
-	//	audioFiles[entry];
-	//}
+	for (const auto& entry : std::filesystem::directory_iterator(audioPath)) {
+		audioFiles[entry.path().filename().string()] = new Sound(entry.path().string().c_str());
+	}
 }
 
-Audio::~Audio() {
-	SDL_CloseAudioDevice(audioDevice);
-}
-
-void Audio::PlayAudio(char* fileName, int loop) {
+void Audio::PlayAudio(const char* fileName, int loop) {
 	audioFiles[fileName]->PlaySound(&audioDevice, loop);
+}
+
+void Audio::StopAudio(const char* fileName) {
+	audioFiles[fileName]->StopSound(&audioDevice);
 }

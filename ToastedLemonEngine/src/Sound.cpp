@@ -1,6 +1,6 @@
 #include "Sound.h"
 
-Sound::Sound(char* filePath) {
+Sound::Sound(const char* filePath) {
 	SDL_LoadWAV(filePath, &wav_spec, &wav_buffer, &wav_length);
 }
 
@@ -17,6 +17,6 @@ void Sound::PlaySound(SDL_AudioDeviceID *device, int loop) {
 	}
 }
 
-void Sound::StopSound() {
+void Sound::StopSound(SDL_AudioDeviceID* device) {
 
 }
