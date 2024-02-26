@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include "Game.h"
 
+#include <iostream>
+#include <filesystem>
+
 Game* game = nullptr;
 
 int main(int argc, char* argv[]) {
-
 	const int fps = 120;
 	const int frameDelay = 1000 / fps;
 	
