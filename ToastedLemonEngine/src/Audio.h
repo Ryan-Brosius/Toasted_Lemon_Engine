@@ -1,7 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "Sound.h"
-#include <list>
+#include <vector>
 #include <string>
 #include <filesystem>
 using namespace std;
@@ -15,7 +15,7 @@ public:
 	void PlaySound(const char* fileName);
 
 private:
-	list<Uint8> audioFiles;
+	vector<Sound> audioFiles;
 	Uint8 audioFile;
 	string audioPath;
 };

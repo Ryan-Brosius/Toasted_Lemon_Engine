@@ -1,7 +1,8 @@
 #pragma once
+#include "Game.h"
 
 class Sound {
 public:
-	Sound();
+	Sound(const char* filePath);
 	~Sound();
 };
