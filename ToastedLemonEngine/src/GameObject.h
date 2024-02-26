@@ -1,6 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "Animation.h"
+#include "Audio.h"
 
 extern Game* game;
 
@@ -39,13 +40,19 @@ public:
 	Animation* player_up = nullptr;
 	Animation* player_down = nullptr;
 	Animation* currentAnimation = nullptr;
-
+	Audio* audio = nullptr;
+	int bgmLength = 0;
+	double bgmTimer = 0;
 
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
 		GameObject(xpos, ypos, rotation, x_scale, y_scale) {}
 	
 	void init()
 	{
+		// Creating audio object
+		audio = new Audio();
+		audio->PlayAudio("Pop.wav", 0);
+
 		player_right = new Animation();
 		player_right->init("Assets/Sprites/sp_link_right.bmp", 2, 0.2);
 
@@ -56,10 +63,19 @@ public:
 		player_down->init("Assets/Sprites/sp_link_forward.bmp", 2, 0.2);
 
 		currentAnimation = player_right;
+
+		bgmLength = audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 	}
 
 	void Update()
 	{
+		bgmTimer += game->deltaTime();
+		if (bgmTimer >= bgmLength) {
+			audio->StopAudio("TheFinalOfTheFantasy.wav");
+			audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
+			bgmTimer = 0;
+		}
+
 		const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 		if (keys[SDL_SCANCODE_UP])
@@ -80,13 +96,21 @@ public:
 		if (keys[SDL_SCANCODE_LEFT])
 			xpos -= 100 * game->deltaTime();
 
-		if (!keys[SDL_SCANCODE_LEFT] && !keys[SDL_SCANCODE_RIGHT] && !keys[SDL_SCANCODE_UP] && !keys[SDL_SCANCODE_DOWN])
+		if (!keys[SDL_SCANCODE_LEFT] && !keys[SDL_SCANCODE_RIGHT] && !keys[SDL_SCANCODE_UP] && !keys[SDL_SCANCODE_DOWN]) {
 			currentAnimation->setAnimating(false);
-		else
+			audio->StopAudio("RustlingGrass.wav");
+		}
+		else {
 			currentAnimation->setAnimating(true);
+			audio->PlayAudio("RustlingGrass.wav", 0);
+		}
 
 		currentAnimation->update();
-
+	}
+	
+	void Clean() {
+		audio->StopAudio("TheFinalOfTheFantasy.wav");
+		audio->~Audio();
 	}
 
 	void Render(SDL_Texture* framebuffer)
