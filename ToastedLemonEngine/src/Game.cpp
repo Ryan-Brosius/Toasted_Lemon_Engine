@@ -138,7 +138,7 @@ void Game::render()
 void Game::clean()
 {
 	//TODO: I love throwing my memory into the void
-
+	player->Clean();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
