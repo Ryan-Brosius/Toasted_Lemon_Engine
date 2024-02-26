@@ -3,9 +3,11 @@
 #include "Sprite.h"
 #include "Animation.h"
 #include "GameObject.h"
+#include "Audio.h"
 
 //Testing creating sprites
 Player* player = nullptr;
+Audio* audio = nullptr;
 
 Game::Game()
 {
@@ -66,6 +68,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	//creating sprite here
 	player = new Player(NULL, NULL, NULL, 3, 3);
 	player->init();
+
+	// Creating audio object
+	audio = new Audio();
 }
 
 void Game::handelEvents()
@@ -129,7 +134,7 @@ void Game::render()
 void Game::clean()
 {
 	//TODO: I love throwing my memory into the void
-
+	audio->~Audio();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

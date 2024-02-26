@@ -1,25 +1,23 @@
 #include "Audio.h"
+#include "Sound.h"
+#include <filesystem>
+#include <iostream>
+//namespace directory_iterator = std::filesystem::directory_iterator;
 
 Audio::Audio() {
-	audioPath = "Assets/Audio";
-	//if (SDL_LoadWAV("test.wav", &wav_spec, &wav_buffer, &wav_length) == NULL) {
-	//	fprintf(stderr, "Could not open test.wav: %s\n", SDL_GetError());
-	//}
-	//else {
-	//	/* Do stuff with the WAV data, and then... */
-	//	SDL_FreeWAV(wav_buffer);
-	//}
+	audioDevice = SDL_OpenAudioDevice(
+		nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE
+	);
 
+	//for (const auto& entry : directory_iterator(audioPath)) {
+	//	audioFiles[entry];
+	//}
 }
 
 Audio::~Audio() {
-
+	SDL_CloseAudioDevice(audioDevice);
 }
 
-void Audio::init() {
-
-}
-
-void Audio::PlaySound(const char* fileName) {
-	
+void Audio::PlayAudio(char* fileName, int loop) {
+	audioFiles[fileName]->PlaySound(&audioDevice, loop);
 }

@@ -4,18 +4,18 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-using namespace std;
+#include <map>
 
 class Audio {
 public:
 	Audio();
 	~Audio();
 
-	void init();
-	void PlaySound(const char* fileName);
+	void PlayAudio(char* fileName, int loop);
 
 private:
-	vector<Sound> audioFiles;
-	Uint8 audioFile;
-	string audioPath;
+	const char* audioPath = "Assets/Audio";
+	SDL_AudioSpec audioSpec;
+	SDL_AudioDeviceID audioDevice;
+	map<char*, Sound*> audioFiles;
 };
