@@ -14,9 +14,26 @@ Sound::~Sound() {
 	SDL_CloseAudioDevice(audioDevice);
 }
 
-void Sound::PlaySound(int loop) {
+int Sound::PlaySound(int loop) {
 	SDL_QueueAudio(audioDevice, wav_buffer, wav_length);
-	SDL_PauseAudioDevice(audioDevice, 0); 
+	SDL_PauseAudioDevice(audioDevice, 0);
+	
+	if (loop) {
+		Uint32 sampleSize = SDL_AUDIO_BITSIZE(wav_spec.format) / 8;
+		Uint32 sampleCount = wav_length / sampleSize;
+		Uint32 sampleLen = 0;
+		if (wav_spec.channels) {
+			sampleLen = sampleCount / wav_spec.channels;
+		}
+		else {
+			sampleLen = sampleCount;
+		}
+
+		return (double)sampleLen / (double)wav_spec.freq;;
+	}
+	else {
+		return 0;
+	}
 }
 
 void Sound::StopSound() {

@@ -14,7 +14,7 @@ public:
 	~Audio();
 
 	void init();
-	void PlayAudio(const char* fileName, int loop);
+	int PlayAudio(const char* fileName, int loop);
 	void StopAudio(const char* fileName);
 
 private:

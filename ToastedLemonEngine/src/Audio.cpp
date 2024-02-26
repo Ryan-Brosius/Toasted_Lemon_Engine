@@ -17,8 +17,8 @@ void Audio::init() {
 	}
 }
 
-void Audio::PlayAudio(const char* fileName, int loop) {
-	audioFiles[fileName]->PlaySound(loop);
+int Audio::PlayAudio(const char* fileName, int loop) {
+	return audioFiles[fileName]->PlaySound(loop);
 }
 
 void Audio::StopAudio(const char* fileName) {

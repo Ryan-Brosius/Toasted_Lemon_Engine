@@ -1,11 +1,12 @@
 #pragma once
 #include "Game.h"
+#include <vector>
 
 class Sound {
 public:
 	Sound(const char* filePath);
 	~Sound();
-	void PlaySound(int loop);
+	int PlaySound(int loop);
 	void StopSound();
 
 private:
