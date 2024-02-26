@@ -72,6 +72,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	// Creating audio object
 	audio = new Audio();
 	audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
+	//audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
+	//audio->PlayAudio("Pop.wav", 0);
+	//audio->PlayAudio("RustlingGrass.wav", 0);
 }
 
 void Game::handelEvents()

@@ -20,6 +20,5 @@ public:
 private:
 	const char* audioPath = "Assets/Audio";
 	SDL_AudioSpec audioSpec;
-	SDL_AudioDeviceID audioDevice;
 	std::map<std::string, Sound*> audioFiles;
 };
