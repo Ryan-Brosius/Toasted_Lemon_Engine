@@ -52,6 +52,7 @@ public:
 		// Creating audio object
 		audio = new Audio();
 		audio->PlayAudio("Pop.wav", 0);
+		audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 
 		player_right = new Animation();
 		player_right->init("Assets/Sprites/sp_link_right.bmp", 2, 0.2);
@@ -64,17 +65,11 @@ public:
 
 		currentAnimation = player_right;
 
-		bgmLength = audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 	}
 
 	void Update()
 	{
-		bgmTimer += game->deltaTime();
-		if (bgmTimer >= bgmLength) {
-			audio->StopAudio("TheFinalOfTheFantasy.wav");
-			audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
-			bgmTimer = 0;
-		}
+		audio->Update();
 
 		const Uint8* keys = SDL_GetKeyboardState(NULL);
 
