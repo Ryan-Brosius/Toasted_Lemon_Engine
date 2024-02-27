@@ -41,8 +41,6 @@ public:
 	Animation* player_down = nullptr;
 	Animation* currentAnimation = nullptr;
 	Audio* audio = nullptr;
-	int bgmLength = 0;
-	double bgmTimer = 0;
 
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
 		GameObject(xpos, ypos, rotation, x_scale, y_scale) {}
@@ -64,7 +62,6 @@ public:
 		player_down->init("Assets/Sprites/sp_link_forward.bmp", 2, 0.2);
 
 		currentAnimation = player_right;
-
 	}
 
 	void Update()
