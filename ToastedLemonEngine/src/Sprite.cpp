@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "BitmapManager.h"
 
+extern Game* game;
+
 Sprite::Sprite()
 {
 	sprite = nullptr;
@@ -47,21 +49,20 @@ void Sprite::init(const char* fileName)
 	height = sprite->h;
 }
 
-
-//Wow whoever wrote this should get fired
-//TODO: clean up this code so I don't cry when I look at it
 void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
 {
     //Need to calculate rotation information here
     double widthScale = width * scale_x;
     double heightScale = height * scale_y;
+    int widthSize = static_cast<int>(widthScale);
+    int heightSize = static_cast<int>(heightScale);
 
-    double r_cos = SDL_cos(rotation);
-    double r_sin = SDL_sin(rotation);
-    
-    //Fix this later to only create size needed
-    int widthSize = (int)widthScale * 1.71;
-    int heightSize = (int)heightScale * 1.71;
+    int texturePitch = game->texturePitch;
+
+    //double r_cos = SDL_cos(rotation);
+    //double r_sin = SDL_sin(rotation);
+    double r_cos = 1;
+    double r_sin = 0;
 
     int centerX = width / 2;
     int centerY = height / 2;
@@ -69,48 +70,48 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
     if ((targetX + widthScale) < 0 || (targetX - widthScale) > WIDTH) return;
     if ((targetY + heightScale) < 0 || (targetY - heightScale) > HEIGHT) return;
 
-    void* texturePixels;
-    int texturePitch;
-    SDL_LockTexture(targetTexture, NULL, &texturePixels, &texturePitch);
+    Uint32* pixels = static_cast<Uint32*>(game->texturePixels);
+    Uint32* spritePixels = static_cast<Uint32*>(sprite->pixels);
 
-    Uint32* pixels = (Uint32*)texturePixels;
-    Uint32*  spritePixels = (Uint32*)sprite->pixels;
+    double inv_scale_x = 1.0 / scale_x;
+    double inv_scale_y = 1.0 / scale_y;
+
     for (int offsetY = 0; offsetY < heightSize; ++offsetY) {
+        int texture_y = static_cast<int>((offsetY + targetY - (heightSize - heightScale) / 2)) * (texturePitch / 4);
         for (int offsetX = 0; offsetX < widthSize; ++offsetX) {
-            
+
             //Choose the pixel location that the pixel will be blit to on screen
             int texture_x = offsetX + targetX - (widthSize - widthScale) / 2;
-            int texture_y = ((int) (offsetY + targetY - (heightSize - heightScale) / 2)) * (texturePitch / 4);
             int targetIndex = texture_x + texture_y;
-            
+
             //Rotate the pixel back to the original sprite image, to get color information
-            int x0 = offsetX - (width / 2) * scale_x - (widthSize - widthScale)/2;
-            int y0 = offsetY - (height / 2) * scale_y - (heightSize - heightScale)/2;
+            int x0 = offsetX - centerX * scale_x - (widthSize - widthScale) / 2;
+            int y0 = offsetY - centerY * scale_y - (heightSize - heightScale) / 2;
 
-            int x_rot = r_cos * x0 + r_sin * y0 + (centerX * scale_x);
-            int y_rot = -r_sin * x0 + r_cos * y0 + (centerY * scale_y);
+            int x_rot = static_cast<int>(r_cos * x0 + r_sin * y0 + centerX * scale_x);
+            int y_rot = static_cast<int>(-r_sin * x0 + r_cos * y0 + centerY * scale_y);
 
-            if (x_rot < 0 || y_rot < 0 || (y_rot / scale_y) >= height || (x_rot / scale_x) >= width) continue;  //Prevents drawing errors due to rotation expanding
+            //Prevents drawing errors due to rotation expanding
+            if (x_rot < 0 || y_rot < 0 || y_rot * inv_scale_y >= height || x_rot * inv_scale_x >= width) continue; 
 
-            int spriteIndex = (y_rot / scale_y) * sprite_width + (x_rot / scale_x) + sheet_offset;  //offset on spritesheets
+            //offset on spritesheets
+            int spriteIndex = static_cast<int>(y_rot * inv_scale_y) * sprite_width + static_cast<int>(x_rot * inv_scale_x) + sheet_offset;
 
-            if (texture_x < 0 || texture_x > WIDTH || texture_y < 0) continue;  //Pixel is being drawn off the intended locaion
+            //Pixel is being drawn off the intended locaion
+            if (texture_x < 0 || texture_x > WIDTH || texture_y < 0) continue;
 
-            if (spritePixels[spriteIndex] == 4285822068 || spritePixels[spriteIndex] == 0) continue; //This is a transparent pixel
+            Uint32 pixelColor = spritePixels[spriteIndex];
 
+            //This is a transparent pixel
+            if ((pixelColor & 0x00FFFFFF) == 0) continue;
 
-            if (targetIndex >= 0 && targetIndex < texturePitch / 4 * HEIGHT &&
-                spriteIndex >= 0 && spriteIndex < sprite_width * height) {
-                Uint32 pixelColor = spritePixels[spriteIndex];
+            if (targetIndex >= 0 && targetIndex < texturePitch / 4 * HEIGHT) {
                 Uint8 r, g, b;
                 SDL_GetRGB(pixelColor, sprite->format, &r, &g, &b);
-
                 pixels[targetIndex] = SDL_MapRGB(sprite->format, r, g, b);
             }
         }
     }
-
-    SDL_UnlockTexture(targetTexture);
 }
 
 void Sprite::scale(int x_scale, int y_scale)
