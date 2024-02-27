@@ -14,15 +14,25 @@
     <ClCompile Include="src\NetworkClient.cpp" />
     <ClCompile Include="src\Networking.h" />
     <ClCompile Include="src\NetworkServer.cpp" />
+    <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\BitmapManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\TilesheetMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio.h" />
+    <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\BitmapManager.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\TilesheetMap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -77,6 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

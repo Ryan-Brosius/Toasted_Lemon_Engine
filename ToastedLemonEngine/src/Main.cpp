@@ -2,11 +2,13 @@
 #include "Game.h"
 #include "Networking.h"
 
+#include <iostream>
+#include <filesystem>
+
 Game* game = nullptr;
 
 int main(int argc, char* argv[]) {
-
-	const int fps = 60;
+	const int fps = 120;
 	const int frameDelay = 1000 / fps;
 	
 	Uint32 frameStart = 0;
@@ -28,7 +30,7 @@ int main(int argc, char* argv[]) {
 
 		frameStart = SDL_GetTicks();
 
-		game->handelEvents();
+		game->handelEvents();		//Will be used to handle input in the future
 		game->update();
 
 		if (frameDelay <= (frameStart - previousRender)) {

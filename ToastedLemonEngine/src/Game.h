@@ -21,13 +21,21 @@ public:
 	void clean();
 
 	bool running() { return isRunning; }
+	double deltaTime();
+	
+	//Rendering
+	void* texturePixels;
+	int texturePitch;
 
 private:
 	bool isRunning;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	SDL_Surface* surface;
 	SDL_Texture* frame_buffer1;
 	SDL_Texture* frame_buffer2;
+
+	//Used to get deltaTime
+	Uint32 lastUpdate;
+	Uint32 currentUpdate;
 };
 
