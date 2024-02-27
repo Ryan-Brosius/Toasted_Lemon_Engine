@@ -27,6 +27,13 @@
     <ClCompile Include="src\Sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Networking.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NetworkServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NetworkClient.cpp">
     <ClCompile Include="src\Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
