@@ -29,6 +29,8 @@ protected:
 	int x_scale;
 	int y_scale;
 
+	int UID;
+
 };
 
 
@@ -119,5 +121,15 @@ public:
 		s->setRotation(rotation);
 		s->scale(x_scale, y_scale);
 		currentAnimation->draw(framebuffer, (int)xpos, (int)ypos);
+	}
+
+	void SetUID(int id)
+	{
+		UID = id;
+	}
+
+	int GetUID()
+	{
+		return UID;
 	}
 };

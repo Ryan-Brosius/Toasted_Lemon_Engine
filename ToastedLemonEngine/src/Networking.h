@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS //just so the compiler wont be a pain in the ass and raise an error just for using sscanf
+
 #include <SDL_net.h>
 #include <stdio.h>
 #include <iostream>
@@ -9,6 +11,9 @@ public:
 	virtual void CloseSocket() = 0;
 	virtual void Encode() = 0;
 	virtual void Decode() = 0;
+protected:
+	char message[1024];
+	char incomingMessage[1024];
 };
 
 class NetworkServer: public NetworkAbstract
@@ -31,6 +36,7 @@ private:
 	int maxConnections;
 	SDLNet_SocketSet clientSocketSet;
 	int currentCon;
+	int curUID;
 };
 
 class NetworkClient: public NetworkAbstract
@@ -43,9 +49,12 @@ public:
 	void CloseSocket();
 	void Encode();
 	void Decode();
+	void Send(int UID, int x_pos, int y_pos);
+	void Recieve();
 
 private:
 	TCPsocket socket;
-	SDLNet_SocketSet socket_set;
+	//SDLNet_SocketSet socket_set;
 	IPaddress ip;
+	SDLNet_SocketSet socketSet;
 };

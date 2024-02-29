@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS //just so the compiler wont be a pain in the ass and raise an error just for using sscanf
+
 #include <stdio.h>
 #include "Game.h"
 #include "Networking.h"
@@ -22,9 +24,10 @@ int main(int argc, char* argv[]) {
 
 	NetworkClient client = NetworkClient();
 	client.init();
+	
 	client.ConnectToHost(server.GetHostName(), 8099);
-
 	server.CheckConnections();
+	
 
 	while (game->running()) {
 
@@ -38,14 +41,13 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
-		server.SendTest();
-		client.RecvTest();
+		client.Recieve();
 
 		SDL_Delay(1);
 	}
 
 	game->clean();
-	server.CloseSocket();
+	//server.CloseSocket();
 
 	return 0;
 }

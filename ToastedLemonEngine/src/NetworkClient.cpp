@@ -8,12 +8,13 @@ NetworkClient::NetworkClient()
 
 void NetworkClient::init()
 {
-	socket = SDLNet_TCP_Open(&ip);
+	socketSet = SDLNet_AllocSocketSet(1);
+	/*socket = SDLNet_TCP_Open(&ip);
 	if (socket == NULL)
 	{
 		fprintf(stderr, "Error SDLNet_TCP_Open: %sn", SDLNet_GetError());
 		exit(-1);
-	}
+	}*/
 
 	/*socket_set = SDLNet_AllocSocketSet(1);
 	if (socket_set == NULL)
@@ -36,6 +37,8 @@ void NetworkClient::ConnectToHost(const char* pIP, int port)
 		fprintf(stderr, "Error SDLNet_ResolveHose: %sn", SDLNet_GetError());
 		exit(-1);
 	}
+	socket = SDLNet_TCP_Open(&ip);
+	SDLNet_TCP_AddSocket(socketSet, socket);
 }
 
 void NetworkClient::RecvTest()
@@ -56,4 +59,29 @@ void NetworkClient::Encode()
 
 void NetworkClient::Decode()
 {
+}
+
+void NetworkClient::Send(int UID, int x_pos, int y_pos)
+{
+	sprintf_s(message, "1 %d %d %d", UID, x_pos, y_pos);
+	SDLNet_TCP_Send(socket, message, strlen(message) + 1);
+}
+
+void NetworkClient::Recieve()
+{
+	if (SDLNet_CheckSockets(socketSet, 0) && SDLNet_SocketReady(socket))
+	{
+		int code;
+		char UID[20];
+
+		SDLNet_TCP_Recv(socket, incomingMessage, 1024);
+		sscanf(incomingMessage, "%d %s", &code, UID);
+
+		switch (code)
+		{
+		case 0:
+			//set UID of player
+			break;
+		}
+	}
 }

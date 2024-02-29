@@ -11,6 +11,7 @@ NetworkServer::NetworkServer(int maxCon)
 	int currentCon;*/
 
 	maxConnections = maxCon;
+	curUID = 0;
 }
 
 void NetworkServer::init()
@@ -56,18 +57,17 @@ const char* NetworkServer::GetHostName()
 
 void NetworkServer::CheckConnections()
 {
-	/*int socketRdy;
-
-	socketRdy = SDLNet_CheckSockets(socket_set, 1000);
-	
-	if (socketRdy > 0)
+	/*if (socketRdy == 0)
 	{
-		client = SDLNet_TCP_Accept(server_socket);
+		std::cout << "none accepted\n";
+		return;
+		//client = SDLNet_TCP_Accept(server_socket);
 	}*/
 
 	client = SDLNet_TCP_Accept(server_socket);
 	if (client == NULL)
 	{
+		
 		return;
 	}
 
@@ -78,8 +78,12 @@ void NetworkServer::CheckConnections()
 			fprintf(stderr, "Error SDLNet_TCP_AddSocket: %sn", SDLNet_GetError());
 			exit(-1);
 		}
+		currentCon++;
+		sprintf_s(message, "0 %d \n", curUID);
+		SDLNet_TCP_Send(client, message, strlen(message) + 1);
+		curUID++;
 	}
-	currentCon++;
+	
 }
 
 void NetworkServer::SendTest()
