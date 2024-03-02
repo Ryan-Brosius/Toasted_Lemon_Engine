@@ -2,7 +2,7 @@
 
 NetworkServer::NetworkServer(int maxCon)
 {
-	next_ind = 0;
+	//next_ind = 0;
 	/*TCPsocket server_socket;
 	TCPsocket client;
 	IPaddress ip;
@@ -12,6 +12,7 @@ NetworkServer::NetworkServer(int maxCon)
 
 	maxConnections = maxCon;
 	curUID = 0;
+	TCPsocket* clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
 }
 
 void NetworkServer::init()
@@ -52,6 +53,7 @@ void NetworkServer::init()
 
 const char* NetworkServer::GetHostName()
 {
+	std::cout << SDLNet_ResolveIP(&ip);
 	return SDLNet_ResolveIP(&ip);
 }
 
@@ -67,7 +69,6 @@ void NetworkServer::CheckConnections()
 	client = SDLNet_TCP_Accept(server_socket);
 	if (client == NULL)
 	{
-		
 		return;
 	}
 
@@ -105,6 +106,7 @@ void NetworkServer::CloseSocket()
 	}*/
 
 	SDLNet_TCP_Close(server_socket);
+	free(clients);
 	//SDLNet_FreeSocketSet(socket_set);
 	SDLNet_Quit();
 }
@@ -116,3 +118,26 @@ void NetworkServer::Encode()
 void NetworkServer::Decode()
 {
 }
+
+void NetworkServer::Update()
+{
+	if (SDLNet_CheckSockets(clientSocketSet, 0) > 0)
+	{
+		for (int i = 0; i < currentCon; i++)
+		{
+			if (SDLNet_SocketReady(clients[i]))
+			{
+				SDLNet_TCP_Recv(clients[i], incomingMessage, 1024);
+
+				for (int k = 0; k < currentCon; k++)
+				{
+					if (k != i)
+					{
+						SDLNet_TCP_Send(clients[k], incomingMessage, strlen(incomingMessage) + 1);
+					}
+				}
+			}
+		}
+	}
+}
+

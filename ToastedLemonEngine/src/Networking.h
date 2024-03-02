@@ -27,9 +27,10 @@ public:
 	void SendTest();
 	void Encode();
 	void Decode();
+	void Update();
 
 private:
-	int next_ind;
+	//int next_ind;
 	TCPsocket server_socket;
 	TCPsocket client;
 	IPaddress ip;
@@ -37,6 +38,7 @@ private:
 	SDLNet_SocketSet clientSocketSet;
 	int currentCon;
 	int curUID;
+	TCPsocket* clients;
 };
 
 class NetworkClient: public NetworkAbstract

@@ -25,9 +25,7 @@ int main(int argc, char* argv[]) {
 	NetworkClient client = NetworkClient();
 	client.init();
 	
-	client.ConnectToHost(server.GetHostName(), 8099);
-	server.CheckConnections();
-	
+	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
 
 	while (game->running()) {
 
@@ -41,6 +39,7 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
+		server.CheckConnections();
 		client.Recieve();
 
 		SDL_Delay(1);

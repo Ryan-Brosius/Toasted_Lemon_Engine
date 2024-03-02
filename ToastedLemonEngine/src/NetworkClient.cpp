@@ -77,6 +77,7 @@ void NetworkClient::Recieve()
 		SDLNet_TCP_Recv(socket, incomingMessage, 1024);
 		sscanf(incomingMessage, "%d %s", &code, UID);
 
+		std::cout << "Message: " << incomingMessage << "\n";
 		switch (code)
 		{
 		case 0:

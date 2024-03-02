@@ -13,6 +13,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\TilesheetMap.cpp" />
+    <ClCompile Include="src\ServerHostTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h" />
