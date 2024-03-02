@@ -41,8 +41,6 @@ public:
 	Animation* player_down = nullptr;
 	Animation* currentAnimation = nullptr;
 	Audio* audio = nullptr;
-	int bgmLength = 0;
-	double bgmTimer = 0;
 
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
 		GameObject(xpos, ypos, rotation, x_scale, y_scale) {}
@@ -52,6 +50,7 @@ public:
 		// Creating audio object
 		audio = new Audio();
 		audio->PlayAudio("Pop.wav", 0);
+		audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 
 		player_right = new Animation();
 		player_right->init("Assets/Sprites/sp_link_right.bmp", 2, 0.2);
@@ -63,18 +62,11 @@ public:
 		player_down->init("Assets/Sprites/sp_link_forward.bmp", 2, 0.2);
 
 		currentAnimation = player_right;
-
-		bgmLength = audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 	}
 
 	void Update()
 	{
-		bgmTimer += game->deltaTime();
-		if (bgmTimer >= bgmLength) {
-			audio->StopAudio("TheFinalOfTheFantasy.wav");
-			audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
-			bgmTimer = 0;
-		}
+		audio->Update();
 
 		const Uint8* keys = SDL_GetKeyboardState(NULL);
 
