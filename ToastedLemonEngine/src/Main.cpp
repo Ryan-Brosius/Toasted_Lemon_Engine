@@ -16,16 +16,29 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart = 0;
 	Uint32 previousRender = 0;
 
+	NetworkClient client;
+	NetworkServer server = NetworkServer(4);
+
+	bool isServer;
+
+	isServer = true;
+
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
 
-	NetworkServer server = NetworkServer(4);
-	server.init();
+	if (isServer)
+	{
+		server.init();
+	}
 
-	NetworkClient client = NetworkClient();
-	client.init();
+	if (!isServer)
+	{
+		client = NetworkClient();
+		client.init();
+		client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+	}
 	
-	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+	
 
 	while (game->running()) {
 
@@ -39,8 +52,14 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
-		server.CheckConnections();
-		client.Recieve();
+		if (isServer)
+		{
+			server.CheckConnections();
+		}
+		if (!isServer)
+		{
+			client.Recieve();
+		}
 
 		SDL_Delay(1);
 	}
