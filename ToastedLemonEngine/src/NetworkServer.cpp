@@ -12,7 +12,7 @@ NetworkServer::NetworkServer(int maxCon)
 
 	maxConnections = maxCon;
 	curUID = 0;
-	TCPsocket* clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
+	clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
 }
 
 void NetworkServer::init()
@@ -37,6 +37,7 @@ void NetworkServer::init()
 	}
 
 	server_socket = SDLNet_TCP_Open(&ip);
+
 	if (server_socket == NULL)
 	{
 		fprintf(stderr, "Error SDLNet_TCP_Open: %sn", SDLNet_GetError());
@@ -70,6 +71,11 @@ void NetworkServer::CheckConnections()
 	if (client == NULL)
 	{
 		return;
+	}
+
+	if (client != NULL)
+	{
+		std::cout << "CLIENT CONNECTED!!" << std::endl;
 	}
 
 	if (currentCon < maxConnections)

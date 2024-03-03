@@ -34,7 +34,7 @@ void NetworkClient::ConnectToHost(const char* pIP, int port)
 {
 	if (SDLNet_ResolveHost(&ip, pIP, port) == -1)
 	{
-		fprintf(stderr, "Error SDLNet_ResolveHose: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLNet_ResolveHose: %s", SDLNet_GetError());
 		exit(-1);
 	}
 	socket = SDLNet_TCP_Open(&ip);

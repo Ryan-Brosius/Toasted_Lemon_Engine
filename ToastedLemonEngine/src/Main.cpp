@@ -24,18 +24,19 @@ int main(int argc, char* argv[]) {
 	isServer = true;
 
 	game = new Game();
-	game->init(NULL, WIDTH, HEIGHT, false);
+	game->init(NULL, WIDTH, HEIGHT, false);	
 
 	if (isServer)
 	{
 		server.init();
+		server.GetHostName();
 	}
 
 	if (!isServer)
 	{
 		client = NetworkClient();
 		client.init();
-		client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+		client.ConnectToHost(NULL, 8099);
 	}
 	
 	
