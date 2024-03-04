@@ -25,11 +25,12 @@ int main(int argc, char* argv[]) {
 	isServer = false;
 
 	game = new Game();
-	game->init(NULL, WIDTH, HEIGHT, false);
+	game->init(NULL, WIDTH, HEIGHT, false);	
 
 	if (isServer)
 	{
 		server.init();
+		server.GetHostName();
 	}
 
 	if (!isServer)

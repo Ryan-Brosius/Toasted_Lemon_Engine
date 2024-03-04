@@ -37,6 +37,7 @@ void NetworkServer::init()
 	}
 
 	server_socket = SDLNet_TCP_Open(&ip);
+
 	if (server_socket == NULL)
 	{
 		fprintf(stderr, "Error SDLNet_TCP_Open: %s\n", SDLNet_GetError());
@@ -71,6 +72,11 @@ void NetworkServer::CheckConnections()
 	if (client == NULL)
 	{
 		return;
+	}
+
+	if (client != NULL)
+	{
+		std::cout << "CLIENT CONNECTED!!" << std::endl;
 	}
 
 	if (currentCon < maxConnections)
