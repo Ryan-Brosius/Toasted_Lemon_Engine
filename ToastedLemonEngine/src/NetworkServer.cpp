@@ -12,7 +12,7 @@ NetworkServer::NetworkServer(int maxCon)
 
 	maxConnections = maxCon;
 	curUID = 0;
-	TCPsocket* clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
+	clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
 }
 
 void NetworkServer::init()
@@ -21,32 +21,32 @@ void NetworkServer::init()
 
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 	{
-		fprintf(stderr, "Error SDL_Init: %sn", SDL_GetError());
+		fprintf(stderr, "Error SDL_Init: %s\n", SDL_GetError());
 		exit(-1);
 	}
 
 	if (SDLNet_Init() == -1)
 	{
-		fprintf(stderr, "Error SDLNet_Init: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLNet_Init: %s\n", SDLNet_GetError());
 	}
 
 	if (SDLNet_ResolveHost(&ip, NULL, 8099) == -1)
 	{
-		fprintf(stderr, "Error SDLnet_ResolveHost: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLnet_ResolveHost: %s\n", SDLNet_GetError());
 		exit(-1);
 	}
 
 	server_socket = SDLNet_TCP_Open(&ip);
 	if (server_socket == NULL)
 	{
-		fprintf(stderr, "Error SDLNet_TCP_Open: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLNet_TCP_Open: %s\n", SDLNet_GetError());
 		exit(-1);
 	}
 
 	clientSocketSet = SDLNet_AllocSocketSet(maxConnections);
 	if (clientSocketSet == NULL)
 	{
-		fprintf(stderr, "Error SDLNet_AllocSocketSet: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLNet_AllocSocketSet: %s\n", SDLNet_GetError());
 		exit(-1);
 	}
 }
@@ -67,6 +67,7 @@ void NetworkServer::CheckConnections()
 	}*/
 
 	client = SDLNet_TCP_Accept(server_socket);
+
 	if (client == NULL)
 	{
 		return;
@@ -76,7 +77,7 @@ void NetworkServer::CheckConnections()
 	{
 		if (SDLNet_TCP_AddSocket(clientSocketSet, client) == -1)
 		{
-			fprintf(stderr, "Error SDLNet_TCP_AddSocket: %sn", SDLNet_GetError());
+			fprintf(stderr, "Error SDLNet_TCP_AddSocket: %s\n", SDLNet_GetError());
 			exit(-1);
 		}
 		currentCon++;

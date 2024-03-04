@@ -21,7 +21,8 @@ int main(int argc, char* argv[]) {
 
 	bool isServer;
 
-	isServer = true;
+	//sets if instance is a server or not
+	isServer = false;
 
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
@@ -35,7 +36,8 @@ int main(int argc, char* argv[]) {
 	{
 		client = NetworkClient();
 		client.init();
-		client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+		//connects clients to localhost
+		client.ConnectToHost("127.0.0.1", 8099);
 	}
 	
 	

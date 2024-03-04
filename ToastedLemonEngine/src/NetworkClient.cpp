@@ -8,7 +8,10 @@ NetworkClient::NetworkClient()
 
 void NetworkClient::init()
 {
+	//adding comment
+	SDLNet_Init();
 	socketSet = SDLNet_AllocSocketSet(1);
+
 	/*socket = SDLNet_TCP_Open(&ip);
 	if (socket == NULL)
 	{
@@ -34,7 +37,7 @@ void NetworkClient::ConnectToHost(const char* pIP, int port)
 {
 	if (SDLNet_ResolveHost(&ip, pIP, port) == -1)
 	{
-		fprintf(stderr, "Error SDLNet_ResolveHose: %sn", SDLNet_GetError());
+		fprintf(stderr, "Error SDLNet_ResolveHost: %s\n", SDLNet_GetError());
 		exit(-1);
 	}
 	socket = SDLNet_TCP_Open(&ip);
