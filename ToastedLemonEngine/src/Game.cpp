@@ -71,6 +71,17 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	map = new TilesheetMap();
 }
 
+void* Game::createNetworkPlayer(int newPlayerUID)
+{
+	Player* netPlayer;
+
+	netPlayer = new Player(NULL, NULL, NULL, 3, 3);
+	netPlayer->init();
+	netPlayer->SetUID(newPlayerUID);
+	return netPlayer;
+}
+
+
 void Game::handelEvents()
 {
 	//TODO: Add Event Handling

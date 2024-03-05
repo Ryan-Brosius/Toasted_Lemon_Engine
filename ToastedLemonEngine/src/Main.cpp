@@ -16,16 +16,16 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart = 0;
 	Uint32 previousRender = 0;
 
-	NetworkClient client;
-	NetworkServer server = NetworkServer(4);
-
 	bool isServer;
 
 	//sets if instance is a server or not
-	isServer = false;
+	isServer = true;
 
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);	
+
+	NetworkClient client = NetworkClient(*game);
+	NetworkServer server = NetworkServer(4);
 
 	if (isServer)
 	{
@@ -35,10 +35,10 @@ int main(int argc, char* argv[]) {
 
 	if (!isServer)
 	{
-		client = NetworkClient();
+		
 		client.init();
 		//connects clients to localhost
-		client.ConnectToHost("127.0.0.1", 8099);
+		client.ConnectToHost("SILVYE-ARGENTUM", 8099);
 	}
 	
 	
@@ -58,6 +58,7 @@ int main(int argc, char* argv[]) {
 		if (isServer)
 		{
 			server.CheckConnections();
+			server.Recieve();
 		}
 		if (!isServer)
 		{

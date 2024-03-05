@@ -86,8 +86,16 @@ void NetworkServer::CheckConnections()
 			fprintf(stderr, "Error SDLNet_TCP_AddSocket: %s\n", SDLNet_GetError());
 			exit(-1);
 		}
+
+		sprintf(message, "1 %d \n", curUID);
+		for (int i = 0; i < currentCon; i++)
+		{
+			SDLNet_TCP_Send(*(clients + i), message, strlen(message) + 1);
+		}
+
+		*(clients + currentCon) = client;
 		currentCon++;
-		sprintf_s(message, "0 %d \n", curUID);
+		sprintf(message, "0 %d \n", curUID);
 		SDLNet_TCP_Send(client, message, strlen(message) + 1);
 		curUID++;
 	}
@@ -122,9 +130,52 @@ void NetworkServer::Encode()
 {
 }
 
-void NetworkServer::Decode()
+void NetworkServer::Decode(TCPsocket sender)
 {
+	int code;
+	char senderID[20];
+	char input[20];
+
+	sscanf(incomingMessage, "%d", &code);
+
+	switch (code)
+	{
+	case 2:
+		sscanf(incomingMessage, "%d, %s, %s", &code, senderID, input);
+
+		for (int i = 0; i < currentCon; i++)
+		{
+			if (*(clients + 1) == sender)
+			{
+				continue;
+			}
+
+			SDLNet_TCP_Send(*(clients + i), incomingMessage, 1024);
+		}
+		break;
+	}
 }
+
+void NetworkServer::Send(char tempWayOfSendingInput)
+{}
+
+void NetworkServer::Recieve()
+{
+	if (SDLNet_CheckSockets(clientSocketSet, 0))
+	{
+		for (int i = 0; i < currentCon; i++)
+		{
+			if (SDLNet_SocketReady(*(clients + i)))
+			{
+				SDLNet_TCP_Recv(*(clients + i), incomingMessage, 1024);
+				Decode(*(clients + i));
+			}
+		}
+	}
+}
+
+
+
 
 void NetworkServer::Update()
 {

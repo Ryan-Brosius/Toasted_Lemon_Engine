@@ -22,6 +22,8 @@ public:
 
 	bool running() { return isRunning; }
 	double deltaTime();
+
+	void* createNetworkPlayer(int newPlayerUID);
 	
 	//Rendering
 	void* texturePixels;
