@@ -1,5 +1,10 @@
 #include "Networking.h"
 
+/*TODO: setup some way for server to map UIDs to sockets
+* clean up code
+* remove comments
+* */
+
 NetworkServer::NetworkServer(int maxCon)
 {
 	//next_ind = 0;
@@ -95,6 +100,7 @@ void NetworkServer::CheckConnections()
 
 		for (int i = 0; i < currentCon; i++)
 		{
+			//TODO: actually make this send UID of players instead
 			sprintf(message, "1 %d \n", i);
 			SDLNet_TCP_Send(client, message, strlen(message) + 1);
 		}
@@ -147,7 +153,7 @@ void NetworkServer::Decode(TCPsocket sender)
 	switch (code)
 	{
 	case 2:
-		sscanf(incomingMessage, "%d, %s, %s", &code, senderID, input);
+		sscanf(incomingMessage, "%d %s %s", &code, senderID, input);
 
 		for (int i = 0; i < currentCon; i++)
 		{
