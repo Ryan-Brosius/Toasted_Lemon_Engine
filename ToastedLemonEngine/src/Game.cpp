@@ -78,6 +78,8 @@ void* Game::createNetworkPlayer(int newPlayerUID)
 	netPlayer = new Player(NULL, NULL, NULL, 3, 3);
 	netPlayer->init();
 	netPlayer->SetUID(newPlayerUID);
+	netPlayer->Render(frame_buffer1);
+	std::cout << "New player spawned" << "\n";
 	return netPlayer;
 }
 

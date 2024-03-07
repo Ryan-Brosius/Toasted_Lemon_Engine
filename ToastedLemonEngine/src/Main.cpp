@@ -34,13 +34,9 @@ int main(int argc, char* argv[]) {
 		server.GetHostName();
 	}
 
-	if (!isServer)
-	{
-		std::cout << "Starting as client\n";
-		client.init();
-		//connects clients to localhost
-		client.ConnectToHost("SILVYE-ARGENTUM", 8099);
-	}
+	std::cout << "Starting client\n";
+	client.init();
+	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
 	
 	
 
@@ -61,10 +57,8 @@ int main(int argc, char* argv[]) {
 			server.CheckConnections();
 			server.Recieve();
 		}
-		if (!isServer)
-		{
-			client.Recieve();
-		}
+		
+		client.Recieve();
 
 		SDL_Delay(1);
 	}

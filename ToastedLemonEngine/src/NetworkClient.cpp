@@ -78,6 +78,7 @@ void NetworkClient::Decode(TCPsocket sender)
 	case 0:
 		sscanf(incomingMessage, "%d %d", &code, &myUID);
 		UID = myUID;
+		std::cout << "UID recieved" << "\n";
 		break;
 	case 1:
 		sscanf(incomingMessage, "%d %d", &code, &newPlayerUID);
