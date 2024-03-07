@@ -29,13 +29,14 @@ int main(int argc, char* argv[]) {
 
 	if (isServer)
 	{
+		std::cout << "Starting as server\n";
 		server.init();
 		server.GetHostName();
 	}
 
 	if (!isServer)
 	{
-		
+		std::cout << "Starting as client\n";
 		client.init();
 		//connects clients to localhost
 		client.ConnectToHost("SILVYE-ARGENTUM", 8099);

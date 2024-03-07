@@ -54,7 +54,7 @@ void NetworkServer::init()
 
 const char* NetworkServer::GetHostName()
 {
-	std::cout << SDLNet_ResolveIP(&ip);
+	std::cout << SDLNet_ResolveIP(&ip) << "\n";
 	return SDLNet_ResolveIP(&ip);
 }
 
