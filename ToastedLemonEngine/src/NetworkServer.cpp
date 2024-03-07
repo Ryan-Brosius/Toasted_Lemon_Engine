@@ -93,6 +93,12 @@ void NetworkServer::CheckConnections()
 			SDLNet_TCP_Send(*(clients + i), message, strlen(message) + 1);
 		}
 
+		for (int i = 0; i < currentCon; i++)
+		{
+			sprintf(message, "1 %d \n", i);
+			SDLNet_TCP_Send(client, message, strlen(message) + 1);
+		}
+
 		*(clients + currentCon) = client;
 		currentCon++;
 		sprintf(message, "0 %d \n", curUID);
