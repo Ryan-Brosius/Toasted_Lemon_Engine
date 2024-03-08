@@ -2,8 +2,8 @@
 #include "BitmapManager.h"
 #include "Sprite.h"
 #include "Animation.h"
-#include "GameObject.h"
 #include "TilesheetMap.h"
+#include "GameObject.h"
 
 //Testing creating sprites
 Player* player = nullptr;
@@ -80,6 +80,7 @@ void* Game::createNetworkPlayer(int newPlayerUID)
 	netPlayer->SetUID(newPlayerUID);
 	netPlayer->Render(frame_buffer1);
 	std::cout << "New player spawned" << "\n";
+	networkMap[newPlayerUID] = netPlayer;
 	return netPlayer;
 }
 
@@ -133,6 +134,10 @@ void Game::render()
 	//will be changed with container of all sprites in the future :)
 	map->DrawMap(frame_buffer1);
 	player->Render(frame_buffer1);
+
+	for (const auto& pair : networkMap) {
+		pair.second->Render(frame_buffer1);
+	}
 
 	SDL_UnlockTexture(frame_buffer1);
 

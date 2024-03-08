@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
+#include <map>
+class GameObject;
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -39,5 +41,8 @@ private:
 	//Used to get deltaTime
 	Uint32 lastUpdate;
 	Uint32 currentUpdate;
+
+	//Map of networked players to gameobjects
+	std::map<int, GameObject*> networkMap;
 };
 
