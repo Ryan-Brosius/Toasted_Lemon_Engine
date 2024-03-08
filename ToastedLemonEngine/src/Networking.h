@@ -46,6 +46,7 @@ private:
 	int currentCon;
 	int curUID;
 	TCPsocket* clients;
+	int* UIDList;
 };
 
 class NetworkClient: public NetworkAbstract
@@ -66,5 +67,5 @@ private:
 	//SDLNet_SocketSet socket_set;
 	IPaddress ip;
 	SDLNet_SocketSet socketSet;
-	char UID;
+	int UID;
 };

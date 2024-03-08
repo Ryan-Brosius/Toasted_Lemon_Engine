@@ -67,10 +67,8 @@ void NetworkClient::Encode()
 void NetworkClient::Decode(TCPsocket sender)
 {
 	int code;
-	char content[20];
-	int newPlayerUID;
-	int myUID;
-	int UID;
+	int UIDbuffer;
+	int incomingUID;
 	double xpos;
 	double ypos;
 
@@ -80,20 +78,21 @@ void NetworkClient::Decode(TCPsocket sender)
 	switch (code)
 	{
 	case 0:
-		sscanf(incomingMessage, "%d %d", &code, &myUID);
-		UID = myUID;
-		std::cout << "UID recieved" << "\n";
+		sscanf(incomingMessage, "%d %d", &code, &UIDbuffer);
+		UID = UIDbuffer;
+		std::cout << "UID recieved: " << UID << "\n";
 		break;
 	case 1:
-		sscanf(incomingMessage, "%d %d", &code, &newPlayerUID);
-		game->createNetworkPlayer(newPlayerUID);
-		std::cout << "PLAYER UID IN MAP: " << newPlayerUID << std::endl;
+		sscanf(incomingMessage, "%d %d", &code, &UIDbuffer);
+		game->createNetworkPlayer(UIDbuffer);
+		std::cout << "PLAYER UID IN MAP: " << UIDbuffer << std::endl;
 		break;
 	case 2:
-		sscanf(incomingMessage, "%d %d %lf %lf", &code, &UID, &xpos, &ypos);
+		std::cout << "Message: " << incomingMessage << "\n";
+		sscanf(incomingMessage, "%d %d %lf %lf", &code, &UIDbuffer, &xpos, &ypos);
 		if (xpos != NULL && ypos != NULL)
 		{
-			game->moveNetPlayer(UID, xpos, ypos);
+			game->moveNetPlayer(UIDbuffer, xpos, ypos);
 		}
 		break;
 	}

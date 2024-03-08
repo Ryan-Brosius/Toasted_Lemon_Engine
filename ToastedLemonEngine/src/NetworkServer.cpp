@@ -18,6 +18,7 @@ NetworkServer::NetworkServer(int maxCon)
 	maxConnections = maxCon;
 	curUID = 0;
 	clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
+	UIDList = (int*) malloc(sizeof(int) * maxCon);
 }
 
 void NetworkServer::init()
@@ -84,6 +85,11 @@ void NetworkServer::CheckConnections()
 		std::cout << "CLIENT CONNECTED!!" << std::endl;
 	}
 
+	sprintf(message, "0 %d \n", curUID);
+	SDLNet_TCP_Send(client, message, strlen(message) + 1);
+
+	SDL_Delay(1.01);
+
 	if (currentCon < maxConnections)
 	{
 		if (SDLNet_TCP_AddSocket(clientSocketSet, client) == -1)
@@ -103,12 +109,12 @@ void NetworkServer::CheckConnections()
 			//TODO: actually make this send UID of players instead
 			sprintf(message, "1 %d \n", i);
 			SDLNet_TCP_Send(client, message, strlen(message) + 1);
+			SDL_Delay(1.01);
 		}
 
 		*(clients + currentCon) = client;
+		
 		currentCon++;
-		sprintf(message, "0 %d \n", curUID);
-		SDLNet_TCP_Send(client, message, strlen(message) + 1);
 		curUID++;
 	}
 	
@@ -134,6 +140,7 @@ void NetworkServer::CloseSocket()
 
 	SDLNet_TCP_Close(server_socket);
 	free(clients);
+	free(UIDList);
 	//SDLNet_FreeSocketSet(socket_set);
 	SDLNet_Quit();
 }
