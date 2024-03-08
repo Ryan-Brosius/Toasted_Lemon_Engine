@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Game.h"
 
+extern Game* game;
+
 class NetworkAbstract
 {
 public:
@@ -65,5 +67,4 @@ private:
 	IPaddress ip;
 	SDLNet_SocketSet socketSet;
 	char UID;
-	Game game;
 };

@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 	bool isServer;
 
 	//sets if instance is a server or not
-	isServer = true;
+	isServer = false;
 
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);	
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Starting client\n";
 	client.init();
-	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+	client.ConnectToHost("LAPTOP-KPQO6LSU", 8099);
 	
 	
 

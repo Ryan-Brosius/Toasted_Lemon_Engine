@@ -5,7 +5,8 @@ NetworkClient::NetworkClient(Game game)
 {
 	/*TCPsocket socket;
 	IPaddress ip;*/
-	this->game = game;
+	//this->game = game;
+	return;
 }
 
 void NetworkClient::init()
@@ -75,7 +76,7 @@ void NetworkClient::Decode(TCPsocket sender)
 
 	sscanf(incomingMessage, "%d", &code);
 
-	std::cout << "Message: " << incomingMessage << "\n";
+	//std::cout << "Message: " << incomingMessage << "\n";
 	switch (code)
 	{
 	case 0:
@@ -85,13 +86,14 @@ void NetworkClient::Decode(TCPsocket sender)
 		break;
 	case 1:
 		sscanf(incomingMessage, "%d %d", &code, &newPlayerUID);
-		game.createNetworkPlayer(newPlayerUID);
+		game->createNetworkPlayer(newPlayerUID);
+		std::cout << "PLAYER UID IN MAP: " << newPlayerUID << std::endl;
 		break;
 	case 2:
-		sscanf(incomingMessage, "%d %d %l %l", &code, &UID, &xpos, &ypos);
+		sscanf(incomingMessage, "%d %d %lf %lf", &code, &UID, &xpos, &ypos);
 		if (xpos != NULL && ypos != NULL)
 		{
-			game.moveNetPlayer(UID, xpos, ypos);
+			game->moveNetPlayer(UID, xpos, ypos);
 		}
 		break;
 	}
@@ -101,7 +103,7 @@ void NetworkClient::Send()
 {
 	double* position = (double*) malloc(sizeof(double) * 2);
 
-	game.GetPlayerPosition(position);
+	game->GetPlayerPosition(position);
 
 	if (*position != NULL && *(position + 1) != NULL)
 	{

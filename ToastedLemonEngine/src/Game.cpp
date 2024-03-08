@@ -77,8 +77,8 @@ void* Game::createNetworkPlayer(int newPlayerUID)
 
 	netPlayer = new Player(NULL, NULL, NULL, 3, 3);
 	netPlayer->init();
-	netPlayer->SetUID(newPlayerUID);
-	netPlayer->Render(frame_buffer1);
+	//netPlayer->SetUID(newPlayerUID);
+	//netPlayer->Render(frame_buffer1);
 	std::cout << "New player spawned" << "\n";
 	networkMap[newPlayerUID] = netPlayer;
 	return netPlayer;
@@ -91,7 +91,8 @@ void Game::GetPlayerPosition(double* posBuffer)
 
 void Game::moveNetPlayer(int UID, double xpos, double ypos)
 {
-	networkMap[UID]->setPosition(xpos, ypos);
+	if (networkMap[UID] != nullptr)
+		networkMap[UID]->setPosition(xpos, ypos);
 }
 
 void Game::handelEvents()
@@ -145,7 +146,8 @@ void Game::render()
 	player->Render(frame_buffer1);
 
 	for (const auto& pair : networkMap) {
-		pair.second->Render(frame_buffer1);
+		if (pair.second != nullptr)
+			pair.second->Render(frame_buffer1);
 	}
 
 	SDL_UnlockTexture(frame_buffer1);
