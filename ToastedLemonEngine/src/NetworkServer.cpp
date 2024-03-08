@@ -85,10 +85,9 @@ void NetworkServer::CheckConnections()
 		std::cout << "CLIENT CONNECTED!!" << std::endl;
 	}
 
-	sprintf(message, "0 %d \n", curUID);
-	SDLNet_TCP_Send(client, message, strlen(message) + 1);
+	
 
-	SDL_Delay(1.01);
+	//SDL_Delay(1.01);
 
 	if (currentCon < maxConnections)
 	{
@@ -109,11 +108,13 @@ void NetworkServer::CheckConnections()
 			//TODO: actually make this send UID of players instead
 			sprintf(message, "1 %d \n", i);
 			SDLNet_TCP_Send(client, message, strlen(message) + 1);
-			SDL_Delay(1.01);
+			SDL_Delay(500);
 		}
 
 		*(clients + currentCon) = client;
-		
+		SDL_Delay(500);
+		sprintf(message, "0 %d \n", curUID);
+		SDLNet_TCP_Send(client, message, strlen(message) + 1);
 		currentCon++;
 		curUID++;
 	}

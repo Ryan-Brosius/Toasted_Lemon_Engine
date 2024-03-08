@@ -88,7 +88,6 @@ void NetworkClient::Decode(TCPsocket sender)
 		std::cout << "PLAYER UID IN MAP: " << UIDbuffer << std::endl;
 		break;
 	case 2:
-		std::cout << "Message: " << incomingMessage << "\n";
 		sscanf(incomingMessage, "%d %d %lf %lf", &code, &UIDbuffer, &xpos, &ypos);
 		if (xpos != NULL && ypos != NULL)
 		{
