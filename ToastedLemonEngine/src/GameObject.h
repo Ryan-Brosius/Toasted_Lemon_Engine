@@ -19,6 +19,8 @@ public:
 	void setRotation(double rotation);
 	void setScale(int width, int height);
 
+	void getPosition(double* posBuffer);
+
 protected:
 	//Double for pos so you can use time.deltatime
 	//When rendering, should convert to int

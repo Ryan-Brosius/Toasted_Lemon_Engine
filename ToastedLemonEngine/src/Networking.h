@@ -12,7 +12,7 @@ public:
 	virtual void CloseSocket() = 0;
 	virtual void Encode() = 0;
 	virtual void Decode(TCPsocket sender) = 0;
-	virtual void Send(char tempWayOfSendingInput) = 0;
+	virtual void Send() = 0;
 	virtual void Recieve() = 0;
 protected:
 	char message[1024];
@@ -30,7 +30,7 @@ public:
 	void SendTest();
 	void Encode();
 	void Decode(TCPsocket sender);
-	void Send(char tempWayOfSendingInput);
+	void Send();
 	void Recieve();
 	void Update();
 
@@ -56,7 +56,7 @@ public:
 	void CloseSocket();
 	void Encode();
 	void Decode(TCPsocket sender);
-	void Send(char tempWayOfSendingInput);
+	void Send();
 	void Recieve();
 
 private:

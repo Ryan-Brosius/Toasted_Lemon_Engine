@@ -168,7 +168,7 @@ void NetworkServer::Decode(TCPsocket sender)
 	}
 }
 
-void NetworkServer::Send(char tempWayOfSendingInput)
+void NetworkServer::Send()
 {}
 
 void NetworkServer::Recieve()

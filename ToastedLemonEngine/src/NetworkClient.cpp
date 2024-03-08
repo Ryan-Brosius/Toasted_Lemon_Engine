@@ -69,6 +69,9 @@ void NetworkClient::Decode(TCPsocket sender)
 	char content[20];
 	int newPlayerUID;
 	int myUID;
+	int UID;
+	double xpos;
+	double ypos;
 
 	sscanf(incomingMessage, "%d", &code);
 
@@ -85,15 +88,24 @@ void NetworkClient::Decode(TCPsocket sender)
 		game.createNetworkPlayer(newPlayerUID);
 		break;
 	case 2:
-		//parse input info
+		sscanf(incomingMessage, "%d %d %l %l", &code, &UID, &xpos, &ypos);
+		game.moveNetPlayer(UID, xpos, ypos);
 		break;
 	}
 }
 
-void NetworkClient::Send(char tempWayOfSendingInput)
+void NetworkClient::Send()
 {
-	sprintf_s(message, "2 %d %d", UID, tempWayOfSendingInput);
-	SDLNet_TCP_Send(socket, message, strlen(message) + 1);
+	double* position = (double*) malloc(sizeof(double) * 2);
+
+	game.GetPlayerPosition(position);
+
+	if (*position != NULL && *(position + 1) != NULL)
+	{
+		sprintf(message, "2 %d %f %f\n", UID, *position, *(position + 1));
+		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
+	}
+	free(position);
 }
 
 void NetworkClient::Recieve()

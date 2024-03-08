@@ -84,6 +84,15 @@ void* Game::createNetworkPlayer(int newPlayerUID)
 	return netPlayer;
 }
 
+void Game::GetPlayerPosition(double* posBuffer)
+{
+	player->getPosition(posBuffer);
+}
+
+void Game::moveNetPlayer(int UID, double xpos, double ypos)
+{
+	networkMap[UID]->setPosition(xpos, ypos);
+}
 
 void Game::handelEvents()
 {
@@ -157,6 +166,9 @@ void Game::clean()
 {
 	//TODO: I love throwing my memory into the void
 	player->Clean();
+	for (const auto& pair : networkMap) {
+		pair.second->Clean();
+	}
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();

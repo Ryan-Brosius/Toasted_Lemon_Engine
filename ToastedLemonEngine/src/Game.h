@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <map>
-class GameObject;
+class Player;
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -26,6 +26,10 @@ public:
 	double deltaTime();
 
 	void* createNetworkPlayer(int newPlayerUID);
+
+	void GetPlayerPosition(double* posBuffer);
+
+	void moveNetPlayer(int UID, double xpos, double ypos);
 	
 	//Rendering
 	void* texturePixels;
@@ -43,6 +47,6 @@ private:
 	Uint32 currentUpdate;
 
 	//Map of networked players to gameobjects
-	std::map<int, GameObject*> networkMap;
+	std::map<int, Player*> networkMap;
 };
 
