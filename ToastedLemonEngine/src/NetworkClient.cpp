@@ -89,7 +89,10 @@ void NetworkClient::Decode(TCPsocket sender)
 		break;
 	case 2:
 		sscanf(incomingMessage, "%d %d %l %l", &code, &UID, &xpos, &ypos);
-		game.moveNetPlayer(UID, xpos, ypos);
+		if (xpos != NULL && ypos != NULL)
+		{
+			game.moveNetPlayer(UID, xpos, ypos);
+		}
 		break;
 	}
 }

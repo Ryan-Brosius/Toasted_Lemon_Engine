@@ -157,7 +157,7 @@ void NetworkServer::Decode(TCPsocket sender)
 
 		for (int i = 0; i < currentCon; i++)
 		{
-			if (*(clients + 1) == sender)
+			if (*(clients + i) == sender)
 			{
 				continue;
 			}
