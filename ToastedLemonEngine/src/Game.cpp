@@ -93,10 +93,21 @@ void Game::GetPlayerPosition(double* posBuffer)
 	player->getPosition(posBuffer);
 }
 
+void Game::GetPlayerAnim(int* animBuffer)
+{
+	*animBuffer = player->animEnum;
+}
+
 void Game::moveNetPlayer(int UID, double xpos, double ypos)
 {
 	if (networkMap[UID] != nullptr)
 		networkMap[UID]->setPosition(xpos, ypos);
+}
+
+void Game::setAnimNetPlayer(int UID, int anim)
+{
+	if (networkMap[UID] != nullptr)
+		networkMap[UID]->setAnimation(anim);
 }
 
 void Game::handelEvents()

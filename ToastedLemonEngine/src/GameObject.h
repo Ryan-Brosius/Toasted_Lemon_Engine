@@ -53,6 +53,15 @@ public:
 	int bgmLength = 0;
 	double bgmTimer = 0;
 
+	int animEnum = 0;
+	enum animation
+	{
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
+	};
+
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
 		GameObject(xpos, ypos, rotation, x_scale, y_scale) 
 	{
@@ -98,16 +107,19 @@ public:
 		{
 			ypos -= 100 * game->deltaTime();
 			currentAnimation = player_up;
+			animEnum = UP;
 		}
 		if (keys[SDL_SCANCODE_DOWN])
 		{
 			ypos += 100 * game->deltaTime();
 			currentAnimation = player_down;
+			animEnum = DOWN;
 		}
 		if (keys[SDL_SCANCODE_RIGHT])
 		{
 			xpos += 100 * game->deltaTime();
 			currentAnimation = player_right;
+			animEnum = RIGHT;
 		}
 		if (keys[SDL_SCANCODE_LEFT])
 			xpos -= 100 * game->deltaTime();
@@ -145,6 +157,25 @@ public:
 	int GetUID()
 	{
 		return UID;
+	}
+
+	void setAnimation(int animation)
+	{
+		switch (animation)
+		{
+		case UP:
+			currentAnimation = player_up;
+			break;
+		case DOWN:
+			currentAnimation = player_down;
+			break;
+		case RIGHT:
+			currentAnimation = player_right;
+			break;
+
+		default:
+			break;
+		}
 	}
 };
 

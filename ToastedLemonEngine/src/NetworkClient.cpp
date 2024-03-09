@@ -71,6 +71,7 @@ void NetworkClient::Decode(TCPsocket sender)
 	int incomingUID;
 	double xpos;
 	double ypos;
+	int anim;
 
 	sscanf(incomingMessage, "%d", &code);
 
@@ -94,20 +95,33 @@ void NetworkClient::Decode(TCPsocket sender)
 			game->moveNetPlayer(UIDbuffer, xpos, ypos);
 		}
 		break;
+	case 3:
+		sscanf(incomingMessage, "%d %d", &code, &UIDbuffer, &anim);
+		game->setAnimNetPlayer(UIDbuffer, anim);
+		break;
 	}
 }
 
 void NetworkClient::Send()
 {
 	double* position = (double*) malloc(sizeof(double) * 2);
+	int* anim = (int*)malloc(sizeof(int));
 
 	game->GetPlayerPosition(position);
+	game->GetPlayerAnim(anim);
 
 	if (*position != NULL && *(position + 1) != NULL)
 	{
 		sprintf(message, "2 %d %f %f\n", UID, *position, *(position + 1));
 		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
 	}
+
+	if (*anim != NULL)
+	{
+		sprintf(message, "3 %d %d", UID, *anim);
+		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
+	}
+
 	free(position);
 }
 
