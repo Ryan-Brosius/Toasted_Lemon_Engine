@@ -46,3 +46,13 @@ void GameObject::getPosition(double* posBuffer)
 	*posBuffer = xpos;
 	*(posBuffer + 1) = ypos;
 }
+
+int GameObject::getX()
+{
+	return xpos;
+}
+
+int GameObject::getY()
+{
+	return ypos;
+}

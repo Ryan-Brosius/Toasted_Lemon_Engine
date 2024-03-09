@@ -21,11 +21,16 @@ public:
 
 	void getPosition(double* posBuffer);
 
+	int getX();
+	int getY();
 protected:
 	//Double for pos so you can use time.deltatime
 	//When rendering, should convert to int
 	double xpos;
 	double ypos;
+
+	int renderxpos;
+	int renderypos;
 
 	double rotation;
 	int x_scale;
@@ -49,7 +54,11 @@ public:
 	double bgmTimer = 0;
 
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
-		GameObject(xpos, ypos, rotation, x_scale, y_scale) {}
+		GameObject(xpos, ypos, rotation, x_scale, y_scale) 
+	{
+		renderxpos = 0;
+		renderypos = 0;
+	}
 	
 	void init()
 	{
@@ -73,6 +82,9 @@ public:
 
 	void Update()
 	{
+		renderxpos = (int) (xpos - game->camera->getX());
+		renderypos = (int) (ypos - game->camera->getY());
+		
 		bgmTimer += game->deltaTime();
 		if (bgmTimer >= bgmLength) {
 			audio->StopAudio("TheFinalOfTheFantasy.wav");
@@ -122,7 +134,7 @@ public:
 		Sprite* s = currentAnimation->getSprite();
 		s->setRotation(rotation);
 		s->scale(x_scale, y_scale);
-		currentAnimation->draw(framebuffer, (int)xpos, (int)ypos);
+		currentAnimation->draw(framebuffer, renderxpos, renderypos);
 	}
 
 	void SetUID(int id)

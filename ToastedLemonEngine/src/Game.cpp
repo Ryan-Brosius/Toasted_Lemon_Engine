@@ -16,9 +16,9 @@ Game::Game()
 	renderer = nullptr;
 	frame_buffer1 = nullptr;
 	frame_buffer2 = nullptr;
-
 	lastUpdate = 0;
 	currentUpdate = 0;
+	camera = nullptr;
 }
 
 Game::~Game()
@@ -65,6 +65,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	SDL_SetTextureBlendMode(frame_buffer1, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(frame_buffer2, SDL_BLENDMODE_BLEND);
 	
+	//creating camera
+	camera = new Camera();
+	camera->init(0, 0, WIDTH, HEIGHT);
+
 	//creating sprite here
 	player = new Player(NULL, NULL, NULL, 3, 3);
 	player->init();
@@ -119,6 +123,8 @@ void Game::update()
 
 	//Gameobject Testing
 	player->Update();
+
+	camera->update(player->getX() - WIDTH / 2, player->getY() - HEIGHT / 2);
 }
 
 
@@ -142,7 +148,7 @@ void Game::render()
 
 	//draw player sprite
 	//will be changed with container of all sprites in the future :)
-	map->DrawMap(frame_buffer1);
+	map->DrawMap(frame_buffer1, camera->getX(), camera->getY());
 	player->Render(frame_buffer1);
 
 	for (const auto& pair : networkMap) {

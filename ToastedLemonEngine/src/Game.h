@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <map>
+#include "Camera.h"
 class Player;
 
 #define WIDTH 800
@@ -34,6 +35,7 @@ public:
 	//Rendering
 	void* texturePixels;
 	int texturePitch;
+	Camera* camera;
 
 private:
 	bool isRunning;
