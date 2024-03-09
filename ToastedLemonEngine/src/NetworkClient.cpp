@@ -75,7 +75,7 @@ void NetworkClient::Decode(TCPsocket sender)
 
 	sscanf(incomingMessage, "%d", &code);
 
-	//std::cout << "Message: " << incomingMessage << "\n";
+	std::cout << "Message: " << incomingMessage << "\n";
 	switch (code)
 	{
 	case 0:
@@ -105,7 +105,7 @@ void NetworkClient::Decode(TCPsocket sender)
 void NetworkClient::Send()
 {
 	double* position = (double*) malloc(sizeof(double) * 2);
-	int* anim = (int*)malloc(sizeof(int));
+	int* anim = (int*) malloc(sizeof(int));
 
 	game->GetPlayerPosition(position);
 	game->GetPlayerAnim(anim);
@@ -118,11 +118,13 @@ void NetworkClient::Send()
 
 	if (*anim != NULL)
 	{
-		sprintf(message, "3 %d %d", UID, *anim);
+		std::cout << *anim << std::endl;
+		sprintf(message, "3 %d %d\n", UID, *anim);
 		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
 	}
 
 	free(position);
+	free(anim);
 }
 
 void NetworkClient::Recieve()

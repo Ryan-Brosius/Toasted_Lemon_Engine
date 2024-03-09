@@ -101,7 +101,7 @@ void Game::GetPlayerAnim(int* animBuffer)
 void Game::moveNetPlayer(int UID, double xpos, double ypos)
 {
 	if (networkMap[UID] != nullptr)
-		networkMap[UID]->setPosition(xpos, ypos);
+		networkMap[UID]->setRenderPos(xpos - camera->getX(), ypos - camera->getY());
 }
 
 void Game::setAnimNetPlayer(int UID, int anim)

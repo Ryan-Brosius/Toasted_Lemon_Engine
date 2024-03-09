@@ -177,6 +177,12 @@ public:
 			break;
 		}
 	}
+
+	void setRenderPos(int renderX, int renderY)
+	{
+		renderxpos = renderX;
+		renderypos = renderY;
+	}
 };
 
 
