@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
+#include <map>
+#include "Camera.h"
+class Player;
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -22,10 +25,19 @@ public:
 
 	bool running() { return isRunning; }
 	double deltaTime();
-	
+
+	void* createNetworkPlayer(int newPlayerUID);
+
+	void GetPlayerPosition(double* posBuffer);
+	void GetPlayerAnim(double* animBuffer);
+
+	void moveNetPlayer(int UID, double xpos, double ypos);
+	void setAnimNetPlayer(int UID, int anim, double localtime, int animating);
+
 	//Rendering
 	void* texturePixels;
 	int texturePitch;
+	Camera* camera;
 
 private:
 	bool isRunning;
@@ -37,5 +49,8 @@ private:
 	//Used to get deltaTime
 	Uint32 lastUpdate;
 	Uint32 currentUpdate;
+
+	//Map of networked players to gameobjects
+	std::map<int, Player*> networkMap;
 };
 
