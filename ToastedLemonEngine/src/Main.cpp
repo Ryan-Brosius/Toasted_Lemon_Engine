@@ -12,7 +12,7 @@ Game* game = nullptr;
 int main(int argc, char* argv[]) {
 	const int fps = 120;
 	const int frameDelay = 1000 / fps;
-	
+
 	Uint32 frameStart = 0;
 	Uint32 previousRender = 0;
 
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 	isServer = true;
 
 	game = new Game();
-	game->init(NULL, WIDTH, HEIGHT, false);	
+	game->init(NULL, WIDTH, HEIGHT, false);
 
 	NetworkClient client = NetworkClient(*game);
 	NetworkServer server = NetworkServer(4);
@@ -37,8 +37,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "Starting client\n";
 	client.init();
 	client.ConnectToHost("LAPTOP-KPQO6LSU", 8099);
-	
-	
+
+
 
 	while (game->running()) {
 
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 			server.CheckConnections();
 			server.Recieve();
 		}
-		
+
 		client.Recieve();
 		client.Send();
 

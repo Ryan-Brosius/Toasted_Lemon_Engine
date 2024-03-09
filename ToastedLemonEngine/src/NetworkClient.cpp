@@ -71,11 +71,13 @@ void NetworkClient::Decode(TCPsocket sender)
 	int incomingUID;
 	double xpos;
 	double ypos;
-	int anim;
+	double animEnum;
+	double animLocalTime;
+	double animating;
 
 	sscanf(incomingMessage, "%d", &code);
 
-	std::cout << "Message: " << incomingMessage << "\n";
+	//std::cout << "Message: " << incomingMessage << "\n";
 	switch (code)
 	{
 	case 0:
@@ -89,37 +91,27 @@ void NetworkClient::Decode(TCPsocket sender)
 		std::cout << "PLAYER UID IN MAP: " << UIDbuffer << std::endl;
 		break;
 	case 2:
-		sscanf(incomingMessage, "%d %d %lf %lf", &code, &UIDbuffer, &xpos, &ypos);
+		sscanf(incomingMessage, "%d %d %lf %lf %lf %lf %lf", &code, &UIDbuffer, &xpos, &ypos, &animEnum, &animLocalTime, &animating);
 		if (xpos != NULL && ypos != NULL)
 		{
 			game->moveNetPlayer(UIDbuffer, xpos, ypos);
 		}
-		break;
-	case 3:
-		sscanf(incomingMessage, "%d %d", &code, &UIDbuffer, &anim);
-		game->setAnimNetPlayer(UIDbuffer, anim);
+		game->setAnimNetPlayer(UIDbuffer, (int)animEnum, animLocalTime, (int)animating);
 		break;
 	}
 }
 
 void NetworkClient::Send()
 {
-	double* position = (double*) malloc(sizeof(double) * 2);
-	int* anim = (int*) malloc(sizeof(int));
+	double* position = (double*)malloc(sizeof(double) * 2);
+	double* anim = (double*)malloc(sizeof(double) * 3);
 
 	game->GetPlayerPosition(position);
 	game->GetPlayerAnim(anim);
 
 	if (*position != NULL && *(position + 1) != NULL)
 	{
-		sprintf(message, "2 %d %f %f\n", UID, *position, *(position + 1));
-		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
-	}
-
-	if (*anim != NULL)
-	{
-		std::cout << *anim << std::endl;
-		sprintf(message, "3 %d %d\n", UID, *anim);
+		sprintf(message, "2 %d %f %f %f %f %f\n", UID, *position, *(position + 1), *anim, *(anim + 1), *(anim + 2));
 		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
 	}
 

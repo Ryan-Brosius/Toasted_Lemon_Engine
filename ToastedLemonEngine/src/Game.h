@@ -29,11 +29,11 @@ public:
 	void* createNetworkPlayer(int newPlayerUID);
 
 	void GetPlayerPosition(double* posBuffer);
-	void GetPlayerAnim(int* animBuffer);
+	void GetPlayerAnim(double* animBuffer);
 
 	void moveNetPlayer(int UID, double xpos, double ypos);
-	void setAnimNetPlayer(int UID, int anim);
-	
+	void setAnimNetPlayer(int UID, int anim, double localtime, int animating);
+
 	//Rendering
 	void* texturePixels;
 	int texturePitch;

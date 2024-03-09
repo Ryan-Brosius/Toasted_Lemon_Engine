@@ -161,6 +161,7 @@ void NetworkServer::Decode(TCPsocket sender)
 	switch (code)
 	{
 	case 2:
+	case 3:
 		sscanf(incomingMessage, "%d %s %s", &code, senderID, input);
 
 		for (int i = 0; i < currentCon; i++)

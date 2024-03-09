@@ -11,7 +11,7 @@ public:
 	GameObject(double xpos, double ypos, double rotation, double x_scale, double y_scale);
 	GameObject();
 	~GameObject();
-	
+
 	void Update();							//Abstract Function
 	void Render(SDL_Texture* framebuffer);	//Abstract Function
 
@@ -63,12 +63,12 @@ public:
 	};
 
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
-		GameObject(xpos, ypos, rotation, x_scale, y_scale) 
+		GameObject(xpos, ypos, rotation, x_scale, y_scale)
 	{
 		renderxpos = 0;
 		renderypos = 0;
 	}
-	
+
 	void init()
 	{
 		// Creating audio object
@@ -91,9 +91,9 @@ public:
 
 	void Update()
 	{
-		renderxpos = (int) (xpos - game->camera->getX());
-		renderypos = (int) (ypos - game->camera->getY());
-		
+		renderxpos = (int)(xpos - game->camera->getX());
+		renderypos = (int)(ypos - game->camera->getY());
+
 		bgmTimer += game->deltaTime();
 		if (bgmTimer >= bgmLength) {
 			audio->StopAudio("TheFinalOfTheFantasy.wav");
@@ -135,7 +135,7 @@ public:
 
 		currentAnimation->update();
 	}
-	
+
 	void Clean() {
 		audio->StopAudio("TheFinalOfTheFantasy.wav");
 		audio->~Audio();
@@ -159,7 +159,7 @@ public:
 		return UID;
 	}
 
-	void setAnimation(int animation)
+	void setAnimation(int animation, double localtime, int animating)
 	{
 		switch (animation)
 		{
@@ -176,6 +176,10 @@ public:
 		default:
 			break;
 		}
+
+		currentAnimation->setLocalTime(localtime);
+		currentAnimation->setAnimating(animating);
+		currentAnimation->update();
 	}
 
 	void setRenderPos(int renderX, int renderY)

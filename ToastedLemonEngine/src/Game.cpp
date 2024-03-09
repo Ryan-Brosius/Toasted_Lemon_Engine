@@ -64,7 +64,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	frame_buffer2 = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 800, 600);
 	SDL_SetTextureBlendMode(frame_buffer1, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureBlendMode(frame_buffer2, SDL_BLENDMODE_BLEND);
-	
+
 	//creating camera
 	camera = new Camera();
 	camera->init(0, 0, WIDTH, HEIGHT);
@@ -93,9 +93,12 @@ void Game::GetPlayerPosition(double* posBuffer)
 	player->getPosition(posBuffer);
 }
 
-void Game::GetPlayerAnim(int* animBuffer)
+void Game::GetPlayerAnim(double* animBuffer)
 {
-	*animBuffer = player->animEnum;
+	*animBuffer = (double)player->animEnum;
+	*(animBuffer + 1) = player->currentAnimation->getLocalTime();
+	*(animBuffer + 2) = (double)player->currentAnimation->animating;
+
 }
 
 void Game::moveNetPlayer(int UID, double xpos, double ypos)
@@ -104,10 +107,13 @@ void Game::moveNetPlayer(int UID, double xpos, double ypos)
 		networkMap[UID]->setRenderPos(xpos - camera->getX(), ypos - camera->getY());
 }
 
-void Game::setAnimNetPlayer(int UID, int anim)
+void Game::setAnimNetPlayer(int UID, int anim, double localtime, int animating)
 {
 	if (networkMap[UID] != nullptr)
-		networkMap[UID]->setAnimation(anim);
+	{
+		networkMap[UID]->setAnimation(anim, localtime, animating);
+	}
+
 }
 
 void Game::handelEvents()
@@ -154,7 +160,7 @@ void Game::render()
 	SDL_UnlockTexture(frame_buffer1);
 
 	SDL_RenderClear(renderer);
-	
+
 	SDL_LockTexture(frame_buffer1, NULL, &texturePixels, &texturePitch);
 
 	//draw player sprite
