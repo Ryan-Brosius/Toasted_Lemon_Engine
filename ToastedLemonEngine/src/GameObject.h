@@ -52,8 +52,6 @@ public:
 	Animation* player_left = nullptr;
 	Animation* currentAnimation = nullptr;
 	Audio* audio = nullptr;
-	int bgmLength = 0;
-	double bgmTimer = 0;
 	InputMap* input = game->input;
 	bool moving = 0;
 
@@ -78,6 +76,7 @@ public:
 		// Creating audio object
 		audio = new Audio();
 		audio->PlayAudio("Pop.wav", 0);
+		audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 
 		player_right = new Animation();
 		player_right->init("Assets/Sprites/sp_link_right.bmp", 2, 0.2);
@@ -92,22 +91,15 @@ public:
 		player_left->init("Assets/Sprites/sp_link_left.bmp", 2, 0.2);
 
 		currentAnimation = player_right;
-
-		bgmLength = audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
 	}
 
 	void Update()
 	{
+		audio->Update();
+
 		renderxpos = (int)(xpos - game->camera->getX());
 		renderypos = (int)(ypos - game->camera->getY());
 		moving = false;
-
-		bgmTimer += game->deltaTime();
-		if (bgmTimer >= bgmLength) {
-			audio->StopAudio("TheFinalOfTheFantasy.wav");
-			audio->PlayAudio("TheFinalOfTheFantasy.wav", 0);
-			bgmTimer = 0;
-		}
 
 		if (input->getAction("player_up"))
 		{
