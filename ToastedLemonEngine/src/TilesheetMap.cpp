@@ -124,11 +124,45 @@ void TilesheetMap::DrawMap(SDL_Texture* framebuffer, int camera_pos_x, int camer
 			int xpos = j * width;
 			int ypos = i * height;
 			type = map[i][j];
-			if (mapTiles[1] != nullptr) {
+			if (mapTiles[0] != nullptr) {
 				mapTiles[0]->setSheetOffset(type);
-				if (type == 35)
+				if (type >= 35 && type <= 86)
 					continue;
 				mapTiles[0]->draw(framebuffer, xpos + xpos_offset, ypos + ypos_offset);
+			}
+		}
+	}
+}
+
+void TilesheetMap::DrawMapOver(SDL_Texture* framebuffer, int camera_pos_x, int camera_pos_y)
+{
+	int type = 0;
+	int width = 48;
+	int height = 48;
+
+	camera_pos_x = SDL_max(camera_pos_x, 0);
+	camera_pos_y = SDL_max(camera_pos_y, 0);
+
+	int xpos_offset = -1 * camera_pos_x;
+	int ypos_offset = -1 * camera_pos_y;
+
+	int row = camera_pos_y / height;
+	int maxRow = 2 + row + HEIGHT / height;
+
+	int col = camera_pos_x / width;
+	int maxCol = 2 + col + WIDTH / width;
+
+	for (int i = row; i < maxRow; i++)
+	{
+		for (int j = col; j < maxCol; j++)
+		{
+			int xpos = j * width;
+			int ypos = i * height;
+			type = map[i][j];
+			if (mapTiles[0] != nullptr) {
+				mapTiles[0]->setSheetOffset(type);
+				if (type >= 36 && type <= 86)
+					mapTiles[0]->draw(framebuffer, xpos + xpos_offset, ypos + ypos_offset);
 			}
 		}
 	}

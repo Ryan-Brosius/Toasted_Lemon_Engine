@@ -14,6 +14,7 @@ public:
 
 	void LoadMap(int* arr, int width, int height);
 	void DrawMap(SDL_Texture* framebuffer, int camera_pos_x, int camera_pos_y);
+	void DrawMapOver(SDL_Texture* framebuffer, int camera_pos_x, int camera_pos_y);
 	void DrawMap(SDL_Texture* framebuffer);
 
 private:

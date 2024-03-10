@@ -19,6 +19,7 @@ Game::Game()
 	lastUpdate = 0;
 	currentUpdate = 0;
 	camera = nullptr;
+	input = nullptr;
 }
 
 Game::~Game()
@@ -69,8 +70,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 	camera = new Camera();
 	camera->init(0, 0, WIDTH, HEIGHT);
 
+	//initializing input map
+	input = new InputMap();
+	input->init();
+
 	//creating sprite here
-	player = new Player(NULL, NULL, NULL, 3, 3);
+	player = new Player(400, 900, NULL, 3, 3);
 	player->init();
 	map = new TilesheetMap();
 }
@@ -119,13 +124,11 @@ void Game::setAnimNetPlayer(int UID, int anim, double localtime, int animating)
 void Game::handelEvents()
 {
 	//TODO: Add Event Handling
+	input->getInput();
 
-	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type) {
-	case SDL_QUIT:
+	if (input->getAction("QUIT_GAME"))
+	{
 		isRunning = false;
-		break;
 	}
 }
 
@@ -163,15 +166,15 @@ void Game::render()
 
 	SDL_LockTexture(frame_buffer1, NULL, &texturePixels, &texturePitch);
 
-	//draw player sprite
-	//will be changed with container of all sprites in the future :)
+	//draw everything to the buffer
 	map->DrawMap(frame_buffer1, camera->getX(), camera->getY());
-	player->Render(frame_buffer1);
-
 	for (const auto& pair : networkMap) {
 		if (pair.second != nullptr)
 			pair.second->Render(frame_buffer1);
 	}
+	player->Render(frame_buffer1);
+	map->DrawMapOver(frame_buffer1, camera->getX(), camera->getY());
+
 
 	SDL_UnlockTexture(frame_buffer1);
 

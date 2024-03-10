@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Starting client\n";
 	client.init();
-	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
+	client.ConnectToHost("LAPTOP-KPQO6LSU", 8099);
 
 
 

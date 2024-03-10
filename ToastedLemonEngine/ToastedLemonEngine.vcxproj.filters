@@ -15,6 +15,7 @@
     <ClCompile Include="src\TilesheetMap.cpp" />
     <ClCompile Include="src\ServerHostTest.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\InputMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h" />
@@ -26,5 +27,6 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\TilesheetMap.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\InputMap.h" />
   </ItemGroup>
 </Project>

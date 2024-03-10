@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\InputMap.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\NetworkClient.cpp" />
     <ClCompile Include="src\Networking.h" />
@@ -27,6 +28,7 @@
     <ClCompile Include="src\TilesheetMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\InputMap.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\GameObject.h" />

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Animation.h"
 #include "Audio.h"
+#include "InputMap.h"
 
 extern Game* game;
 
@@ -48,10 +49,13 @@ public:
 	Animation* player_right = nullptr;
 	Animation* player_up = nullptr;
 	Animation* player_down = nullptr;
+	Animation* player_left = nullptr;
 	Animation* currentAnimation = nullptr;
 	Audio* audio = nullptr;
 	int bgmLength = 0;
 	double bgmTimer = 0;
+	InputMap* input = game->input;
+	bool moving = 0;
 
 	int animEnum = 0;
 	enum animation
@@ -84,6 +88,9 @@ public:
 		player_down = new Animation();
 		player_down->init("Assets/Sprites/sp_link_forward.bmp", 2, 0.2);
 
+		player_left = new Animation();
+		player_left->init("Assets/Sprites/sp_link_left.bmp", 2, 0.2);
+
 		currentAnimation = player_right;
 
 		bgmLength = audio->PlayAudio("TheFinalOfTheFantasy.wav", 1);
@@ -93,6 +100,7 @@ public:
 	{
 		renderxpos = (int)(xpos - game->camera->getX());
 		renderypos = (int)(ypos - game->camera->getY());
+		moving = false;
 
 		bgmTimer += game->deltaTime();
 		if (bgmTimer >= bgmLength) {
@@ -101,30 +109,36 @@ public:
 			bgmTimer = 0;
 		}
 
-		const Uint8* keys = SDL_GetKeyboardState(NULL);
-
-		if (keys[SDL_SCANCODE_UP])
+		if (input->getAction("player_up"))
 		{
 			ypos -= 100 * game->deltaTime();
 			currentAnimation = player_up;
 			animEnum = UP;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_DOWN])
+		if (input->getAction("player_down"))
 		{
 			ypos += 100 * game->deltaTime();
 			currentAnimation = player_down;
 			animEnum = DOWN;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_RIGHT])
+		if (input->getAction("player_right"))
 		{
 			xpos += 100 * game->deltaTime();
 			currentAnimation = player_right;
 			animEnum = RIGHT;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_LEFT])
+		if (input->getAction("player_left"))
+		{
 			xpos -= 100 * game->deltaTime();
+			currentAnimation = player_left;
+			animEnum = LEFT;
+			moving = true;
+		}
 
-		if (!keys[SDL_SCANCODE_LEFT] && !keys[SDL_SCANCODE_RIGHT] && !keys[SDL_SCANCODE_UP] && !keys[SDL_SCANCODE_DOWN]) {
+		if (!moving) {
 			currentAnimation->setAnimating(false);
 			audio->StopAudio("RustlingGrass.wav");
 		}
@@ -172,7 +186,9 @@ public:
 		case RIGHT:
 			currentAnimation = player_right;
 			break;
-
+		case LEFT:
+			currentAnimation = player_left;
+			break;
 		default:
 			break;
 		}
