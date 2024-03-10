@@ -40,3 +40,9 @@ int Camera::getY()
 {
 	return ypos;
 }
+
+void Camera::setMapSize(int w, int h)
+{
+	width = w;
+	height = h;
+}

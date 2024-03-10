@@ -9,6 +9,7 @@ public:
 	int getX();
 	int getY();
 
+	void setMapSize(int width, int height);
 private:
 	//POSITION OF THE CAMERA
 	int xpos;

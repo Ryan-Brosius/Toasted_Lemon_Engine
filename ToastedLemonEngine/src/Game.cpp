@@ -150,7 +150,7 @@ void Game::render()
 	//frame_buffer is texture that gets wrapped around the screen
 	//so we can manually edit the pixels on it
 	SDL_SetRenderTarget(renderer, frame_buffer1);
-	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+	SDL_SetRenderDrawColor(renderer, 72, 152, 72, 255);
 	//Clears texture
 
 	void* pixels;

@@ -111,6 +111,7 @@ void NetworkClient::Send()
 
 	if (*position != NULL && *(position + 1) != NULL)
 	{
+		SDL_Delay(1);
 		sprintf(message, "2 %d %f %f %f %f %f\n", UID, *position, *(position + 1), *anim, *(anim + 1), *(anim + 2));
 		SDLNet_TCP_Send(socket, message, strlen(message) + 1);
 	}
