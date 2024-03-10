@@ -29,15 +29,12 @@ public:
 	void CloseSocket();
 	void CheckConnections();
 	const char* GetHostName();
-	void SendTest();
 	void Encode();
 	void Decode(TCPsocket sender);
 	void Send();
 	void Recieve();
-	void Update();
 
 private:
-	//int next_ind;
 	TCPsocket server_socket;
 	TCPsocket client;
 	IPaddress ip;
@@ -46,16 +43,14 @@ private:
 	int currentCon;
 	int curUID;
 	TCPsocket* clients;
-	int* UIDList;
 };
 
 class NetworkClient: public NetworkAbstract
 {
 public:
-	NetworkClient(Game game);
+	NetworkClient();
 	void init();
 	void ConnectToHost(const char* pIP, int port);
-	void RecvTest();
 	void CloseSocket();
 	void Encode();
 	void Decode(TCPsocket sender);
@@ -64,8 +59,7 @@ public:
 
 private:
 	TCPsocket socket;
-	//SDLNet_SocketSet socket_set;
 	IPaddress ip;
-	SDLNet_SocketSet socketSet;
 	int UID;
+	SDLNet_SocketSet socketSet;
 };

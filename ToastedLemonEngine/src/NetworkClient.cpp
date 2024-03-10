@@ -1,40 +1,15 @@
 #include "Networking.h"
 #include "Game.h"
 
-NetworkClient::NetworkClient(Game game)
+NetworkClient::NetworkClient()
 {
-	/*TCPsocket socket;
-	IPaddress ip;*/
-	//this->game = game;
 	return;
 }
 
 void NetworkClient::init()
 {
-	//adding comment
 	SDLNet_Init();
 	socketSet = SDLNet_AllocSocketSet(1);
-	
-
-	/*socket = SDLNet_TCP_Open(&ip);
-	if (socket == NULL)
-	{
-		fprintf(stderr, "Error SDLNet_TCP_Open: %sn", SDLNet_GetError());
-		exit(-1);
-	}*/
-
-	/*socket_set = SDLNet_AllocSocketSet(1);
-	if (socket_set == NULL)
-	{
-		fprintf(stderr, "Error SDLNet_AllocSocketSet: %sn", SDLNet_GetError());
-		exit(-1);
-	}
-
-	if (SDLNet_TCP_AddSocket(socket_set, socket) == -1)
-	{
-		fprintf(stderr, "Error SDLNet_TCP_AddSocket: %sn", SDLNet_GetError());
-		exit(-1);
-	}*/
 }
 
 void NetworkClient::ConnectToHost(const char* pIP, int port)
@@ -48,16 +23,12 @@ void NetworkClient::ConnectToHost(const char* pIP, int port)
 	SDLNet_TCP_AddSocket(socketSet, socket);
 }
 
-void NetworkClient::RecvTest()
-{
-	/*char text[6];
-	
-	SDLNet_TCP_Recv(socket, text, 6);
-	std::cout << text;*/
-}
 
 void NetworkClient::CloseSocket()
 {
+	SDLNet_TCP_Close(socket);
+	SDLNet_FreeSocketSet(socketSet);
+	SDLNet_Quit();
 }
 
 void NetworkClient::Encode()
@@ -77,7 +48,6 @@ void NetworkClient::Decode(TCPsocket sender)
 
 	sscanf(incomingMessage, "%d", &code);
 
-	//std::cout << "Message: " << incomingMessage << "\n";
 	switch (code)
 	{
 	case 0:

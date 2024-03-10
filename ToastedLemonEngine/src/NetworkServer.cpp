@@ -1,24 +1,10 @@
 #include "Networking.h"
 
-/*TODO: setup some way for server to map UIDs to sockets
-* clean up code
-* remove comments
-* */
-
 NetworkServer::NetworkServer(int maxCon)
 {
-	//next_ind = 0;
-	/*TCPsocket server_socket;
-	TCPsocket client;
-	IPaddress ip;
-	int maxConnections;
-	SDLNet_SocketSet clientSocketSet;
-	int currentCon;*/
-
 	maxConnections = maxCon;
 	curUID = 0;
 	clients = (TCPsocket*) malloc(sizeof(TCPsocket) * maxCon);
-	UIDList = (int*) malloc(sizeof(int) * maxCon);
 }
 
 void NetworkServer::init()
@@ -66,13 +52,6 @@ const char* NetworkServer::GetHostName()
 
 void NetworkServer::CheckConnections()
 {
-	/*if (socketRdy == 0)
-	{
-		std::cout << "none accepted\n";
-		return;
-		//client = SDLNet_TCP_Accept(server_socket);
-	}*/
-
 	client = SDLNet_TCP_Accept(server_socket);
 
 	if (client == NULL)
@@ -84,10 +63,6 @@ void NetworkServer::CheckConnections()
 	{
 		std::cout << "CLIENT CONNECTED!!" << std::endl;
 	}
-
-	
-
-	//SDL_Delay(1.01);
 
 	if (currentCon < maxConnections)
 	{
@@ -105,7 +80,6 @@ void NetworkServer::CheckConnections()
 
 		for (int i = 0; i < currentCon; i++)
 		{
-			//TODO: actually make this send UID of players instead
 			sprintf(message, "1 %d \n", i);
 			SDLNet_TCP_Send(client, message, strlen(message) + 1);
 			SDL_Delay(500);
@@ -121,28 +95,15 @@ void NetworkServer::CheckConnections()
 	
 }
 
-void NetworkServer::SendTest()
-{
-	/*const char* text = "Hello\n";
-
-	if (client != NULL)
-	{
-		SDLNet_TCP_Send(client, text, 6);
-	}*/
-}
-
 void NetworkServer::CloseSocket()
 {
-	/*if (SDLNet_TCP_DelSocket(socket_set, server_socket) == -1)
-	{
-		fprintf(stderr, "Error SDLNet_TCP_DelSocket: %sn", SDLNet_GetError());
-		exit(-1);
-	}*/
-
 	SDLNet_TCP_Close(server_socket);
+	for (int i = 0; i < currentCon; i++)
+	{
+		SDLNet_TCP_Close(*(clients + i));
+	}
 	free(clients);
-	free(UIDList);
-	//SDLNet_FreeSocketSet(socket_set);
+	SDLNet_FreeSocketSet(clientSocketSet);
 	SDLNet_Quit();
 }
 
@@ -194,29 +155,3 @@ void NetworkServer::Recieve()
 		}
 	}
 }
-
-
-
-
-void NetworkServer::Update()
-{
-	if (SDLNet_CheckSockets(clientSocketSet, 0) > 0)
-	{
-		for (int i = 0; i < currentCon; i++)
-		{
-			if (SDLNet_SocketReady(clients[i]))
-			{
-				SDLNet_TCP_Recv(clients[i], incomingMessage, 1024);
-
-				for (int k = 0; k < currentCon; k++)
-				{
-					if (k != i)
-					{
-						SDLNet_TCP_Send(clients[k], incomingMessage, strlen(incomingMessage) + 1);
-					}
-				}
-			}
-		}
-	}
-}
-

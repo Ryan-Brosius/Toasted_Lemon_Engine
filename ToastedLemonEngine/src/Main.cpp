@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
 
-	NetworkClient client = NetworkClient(*game);
+	NetworkClient client = NetworkClient();
 	NetworkServer server = NetworkServer(4);
 
 	if (isServer)
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "Starting client\n";
 	client.init();
-	client.ConnectToHost("LAPTOP-KPQO6LSU", 8099);
+	client.ConnectToHost("SILVYE-ARGENTUM", 8099);
 
 
 
@@ -64,8 +64,13 @@ int main(int argc, char* argv[]) {
 		SDL_Delay(1);
 	}
 
-	game->clean();
-	//server.CloseSocket();
+	client.CloseSocket();
 
+	game->clean();
+	if (isServer)
+	{
+		server.CloseSocket();
+	}
+	
 	return 0;
 }
