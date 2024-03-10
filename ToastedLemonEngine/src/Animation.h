@@ -17,8 +17,12 @@ public:
 
 	void draw(SDL_Texture* surface, int x, int y);
 
-private:
+	double getLocalTime();
+	void setLocalTime(double time);
+
 	bool animating;
+
+private:
 	double local_time;
 	Sprite* sprite_sheet;
 

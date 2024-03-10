@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS //just so the compiler wont be a pain in the ass and raise an error just for using sscanf
+
 #include <stdio.h>
 #include "Game.h"
 #include "Networking.h"
@@ -10,21 +12,33 @@ Game* game = nullptr;
 int main(int argc, char* argv[]) {
 	const int fps = 120;
 	const int frameDelay = 1000 / fps;
-	
+
 	Uint32 frameStart = 0;
 	Uint32 previousRender = 0;
+
+	bool isServer;
+
+	//sets if instance is a server or not
+	isServer = true;
 
 	game = new Game();
 	game->init(NULL, WIDTH, HEIGHT, false);
 
-	NetworkServer server = NetworkServer(4);
-	server.init();
-
 	NetworkClient client = NetworkClient();
-	client.init();
-	client.ConnectToHost(server.GetHostName(), 8099);
+	NetworkServer server = NetworkServer(4);
 
-	server.CheckConnections();
+	if (isServer)
+	{
+		std::cout << "Starting as server\n";
+		server.init();
+		server.GetHostName();
+	}
+
+	std::cout << "Starting client\n";
+	client.init();
+	client.ConnectToHost("LAPTOP-KPQO6LSU", 8099);
+
+
 
 	while (game->running()) {
 
@@ -38,14 +52,25 @@ int main(int argc, char* argv[]) {
 			previousRender = SDL_GetTicks();
 		}
 
-		server.SendTest();
-		client.RecvTest();
+		if (isServer)
+		{
+			server.CheckConnections();
+			server.Recieve();
+		}
+
+		client.Recieve();
+		client.Send();
 
 		SDL_Delay(1);
 	}
 
-	game->clean();
-	server.CloseSocket();
+	client.CloseSocket();
 
+	game->clean();
+	if (isServer)
+	{
+		server.CloseSocket();
+	}
+	
 	return 0;
 }

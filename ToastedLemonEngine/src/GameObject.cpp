@@ -40,3 +40,19 @@ void GameObject::setScale(int w, int h)
 	x_scale = w;
 	y_scale = h;
 }
+
+void GameObject::getPosition(double* posBuffer)
+{
+	*posBuffer = xpos;
+	*(posBuffer + 1) = ypos;
+}
+
+int GameObject::getX()
+{
+	return xpos;
+}
+
+int GameObject::getY()
+{
+	return ypos;
+}

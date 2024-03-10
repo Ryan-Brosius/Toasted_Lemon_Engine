@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Animation.h"
 #include "Audio.h"
+#include "InputMap.h"
 
 extern Game* game;
 
@@ -11,7 +12,7 @@ public:
 	GameObject(double xpos, double ypos, double rotation, double x_scale, double y_scale);
 	GameObject();
 	~GameObject();
-	
+
 	void Update();							//Abstract Function
 	void Render(SDL_Texture* framebuffer);	//Abstract Function
 
@@ -19,15 +20,24 @@ public:
 	void setRotation(double rotation);
 	void setScale(int width, int height);
 
+	void getPosition(double* posBuffer);
+
+	int getX();
+	int getY();
 protected:
 	//Double for pos so you can use time.deltatime
 	//When rendering, should convert to int
 	double xpos;
 	double ypos;
 
+	int renderxpos;
+	int renderypos;
+
 	double rotation;
 	int x_scale;
 	int y_scale;
+
+	int UID;
 
 };
 
@@ -39,12 +49,26 @@ public:
 	Animation* player_right = nullptr;
 	Animation* player_up = nullptr;
 	Animation* player_down = nullptr;
+	Animation* player_left = nullptr;
 	Animation* currentAnimation = nullptr;
 	Audio* audio = nullptr;
 
+	int animEnum = 0;
+	enum animation
+	{
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
+	};
+
 	Player(double xpos, double ypos, double rotation, double x_scale, double y_scale) :
-		GameObject(xpos, ypos, rotation, x_scale, y_scale) {}
-	
+		GameObject(xpos, ypos, rotation, x_scale, y_scale)
+	{
+		renderxpos = 0;
+		renderypos = 0;
+	}
+
 	void init()
 	{
 		// Creating audio object
@@ -61,6 +85,9 @@ public:
 		player_down = new Animation();
 		player_down->init("Assets/Sprites/sp_link_forward.bmp", 2, 0.2);
 
+		player_left = new Animation();
+		player_left->init("Assets/Sprites/sp_link_left.bmp", 2, 0.2);
+
 		currentAnimation = player_right;
 	}
 
@@ -68,27 +95,36 @@ public:
 	{
 		audio->Update();
 
-		const Uint8* keys = SDL_GetKeyboardState(NULL);
-
-		if (keys[SDL_SCANCODE_UP])
+		if (input->getAction("player_up"))
 		{
 			ypos -= 100 * game->deltaTime();
 			currentAnimation = player_up;
+			animEnum = UP;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_DOWN])
+		if (input->getAction("player_down"))
 		{
 			ypos += 100 * game->deltaTime();
 			currentAnimation = player_down;
+			animEnum = DOWN;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_RIGHT])
+		if (input->getAction("player_right"))
 		{
 			xpos += 100 * game->deltaTime();
 			currentAnimation = player_right;
+			animEnum = RIGHT;
+			moving = true;
 		}
-		if (keys[SDL_SCANCODE_LEFT])
+		if (input->getAction("player_left"))
+		{
 			xpos -= 100 * game->deltaTime();
+			currentAnimation = player_left;
+			animEnum = LEFT;
+			moving = true;
+		}
 
-		if (!keys[SDL_SCANCODE_LEFT] && !keys[SDL_SCANCODE_RIGHT] && !keys[SDL_SCANCODE_UP] && !keys[SDL_SCANCODE_DOWN]) {
+		if (!moving) {
 			currentAnimation->setAnimating(false);
 			audio->StopAudio("RustlingGrass.wav");
 		}
@@ -99,7 +135,7 @@ public:
 
 		currentAnimation->update();
 	}
-	
+
 	void Clean() {
 		audio->StopAudio("TheFinalOfTheFantasy.wav");
 		audio->~Audio();
@@ -110,6 +146,49 @@ public:
 		Sprite* s = currentAnimation->getSprite();
 		s->setRotation(rotation);
 		s->scale(x_scale, y_scale);
-		currentAnimation->draw(framebuffer, (int)xpos, (int)ypos);
+		currentAnimation->draw(framebuffer, renderxpos, renderypos);
+	}
+
+	void SetUID(int id)
+	{
+		UID = id;
+	}
+
+	int GetUID()
+	{
+		return UID;
+	}
+
+	void setAnimation(int animation, double localtime, int animating)
+	{
+		switch (animation)
+		{
+		case UP:
+			currentAnimation = player_up;
+			break;
+		case DOWN:
+			currentAnimation = player_down;
+			break;
+		case RIGHT:
+			currentAnimation = player_right;
+			break;
+		case LEFT:
+			currentAnimation = player_left;
+			break;
+		default:
+			break;
+		}
+
+		currentAnimation->setLocalTime(localtime);
+		currentAnimation->setAnimating(animating);
+		currentAnimation->update();
+	}
+
+	void setRenderPos(int renderX, int renderY)
+	{
+		renderxpos = renderX;
+		renderypos = renderY;
 	}
 };
+
+

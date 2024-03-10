@@ -4,7 +4,7 @@
 
 extern Game* game;
 
-Animation::Animation() 
+Animation::Animation()
 {
 	local_time = 0;
 	sprite_sheet = nullptr;
@@ -17,7 +17,7 @@ Animation::Animation()
 
 Animation::~Animation() {}
 
-void Animation::init(const char* spritesheet, int frames, double time) 
+void Animation::init(const char* spritesheet, int frames, double time)
 {
 	Sprite* sprite = new Sprite();
 	sprite->init(spritesheet);
@@ -29,7 +29,7 @@ void Animation::init(const char* spritesheet, int frames, double time)
 	sprite->setSpriteSheet(frames);
 }
 
-void Animation::update() 
+void Animation::update()
 {
 	if (animating && total_frames != 1)
 		Animation::determineFrame();
@@ -60,4 +60,14 @@ Sprite* Animation::getSprite()
 void Animation::draw(SDL_Texture* surface, int x, int y)
 {
 	sprite_sheet->draw(surface, x, y);
+}
+
+double Animation::getLocalTime()
+{
+	return local_time;
+}
+
+void Animation::setLocalTime(double lt)
+{
+	local_time = lt;
 }
