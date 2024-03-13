@@ -1,10 +1,9 @@
 #pragma once
-#include "Game.h"
 #include "Sound.h"
-#include <vector>
 #include <string>
 #include <filesystem>
 #include <map>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -14,11 +13,12 @@ public:
 	~Audio();
 
 	void init();
-	int PlayAudio(const char* fileName, int loop);
+	void Update();
+	void PlayAudio(const char* fileName, int loop);
 	void StopAudio(const char* fileName);
 
 private:
 	const char* audioPath = "Assets/Audio";
-	SDL_AudioSpec audioSpec;
 	std::map<std::string, Sound*> audioFiles;
+	std::vector<std::string> loopFiles;
 };
