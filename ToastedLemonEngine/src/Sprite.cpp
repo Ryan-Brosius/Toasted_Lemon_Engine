@@ -59,10 +59,10 @@ void Sprite::draw(SDL_Texture* targetTexture, int targetX, int targetY)
 
     int texturePitch = game->texturePitch;
 
-    //double r_cos = SDL_cos(rotation);
-    //double r_sin = SDL_sin(rotation);
-    double r_cos = 1;
-    double r_sin = 0;
+    double r_cos = SDL_cos(rotation);
+    double r_sin = SDL_sin(rotation);
+    //double r_cos = 1;
+    //double r_sin = 0;
 
     int centerX = width / 2;
     int centerY = height / 2;

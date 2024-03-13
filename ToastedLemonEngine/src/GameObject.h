@@ -101,6 +101,7 @@ public:
 		renderxpos = (int)(xpos - game->camera->getX());
 		renderypos = (int)(ypos - game->camera->getY());
 		moving = false;
+		rotation += 360 * game->deltaTime();
 
 		bgmTimer += game->deltaTime();
 		if (bgmTimer >= bgmLength) {
